@@ -1,0 +1,7 @@
+datasets>=2.18
+huggingface_hub
+gTTS==2.5.1
+sqlalchemy>=2.0
+psycopg2-binary
+python-dotenv
+alembic
