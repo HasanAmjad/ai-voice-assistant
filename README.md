@@ -226,11 +226,11 @@ alembic
 
 ## Member Responsibilities
 
-| Member   | Scope                               | Key Files                                                                               |
-| -------- | ----------------------------------- | --------------------------------------------------------------------------------------- |
-| Member 1 | Data Ingestion & Storage Schema     | `ingestion/`, `storage/models.py`, `storage/db.py`                                      |
-| Member 2 | Transcription & Data Quality        | `processing/`                                                                           |
-| Member 3 | ML / Intent Classification          | `ml/`                                                                                   |
-| Member 4 | Orchestration, Deployment & Serving | `orchestration/`, `serving/`, `logging_monitoring/`, `Dockerfile`, `docker-compose.yml` |
+| Member             | Scope                               | Key Files                                                                               |
+| ------------------ | ----------------------------------- | --------------------------------------------------------------------------------------- |
+| Member 1 - Hasan   | Data Ingestion & Storage Schema     | `ingestion/`, `storage/models.py`, `storage/db.py`                                      |
+| Member 2 - Rohan   | Transcription & Data Quality        | `processing/`                                                                           |
+| Member 3 - Lina    | ML / Intent Classification          | `ml/`                                                                                   |
+| Member 4 - Ibrahim | Orchestration, Deployment & Serving | `orchestration/`, `serving/`, `logging_monitoring/`, `Dockerfile`, `docker-compose.yml` |
 
 ---
