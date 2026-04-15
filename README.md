@@ -234,13 +234,3 @@ alembic
 | Member 4 | Orchestration, Deployment & Serving | `orchestration/`, `serving/`, `logging_monitoring/`, `Dockerfile`, `docker-compose.yml` |
 
 ---
-
-## AI Usage Declaration
-
-- **Tool:** Claude (Anthropic)
-- **Used for:** Project architecture planning, step-by-step implementation guide, database schema design, Prefect task structure, Docker configuration.
-- **Extent:** Guidance and planning only. All code was written, tested, and debugged by team members. No code was copy-pasted verbatim from AI output.
-
----
-
-_VoiceIntent · AI 620 · LUMS SBASSE_
