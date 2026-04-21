@@ -1,8 +1,8 @@
 # VoiceIntent
 
-### An Automated Voice-to-Intent Intelligence Pipeline
+### An Intelligent Voice Assistant for Customer Support
 
-**AI 620: Fundamentals of Data Engineering · LUMS SBASSE**
+**AI 620: Fundamentals of Data Engineering · LUMS**
 
 ---
 
