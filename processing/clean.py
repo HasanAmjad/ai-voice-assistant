@@ -5,6 +5,11 @@ import logging
 
 from sqlalchemy import select
 
+import sys # Added
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from storage.db import get_session
 from storage.models import Transcript
 
