@@ -6,6 +6,11 @@ import pandas as pd
 import great_expectations as gx
 from sqlalchemy import text
 
+import sys # Added
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from storage.db import get_session
 
 # Configuring the logger for this module
