@@ -25,7 +25,7 @@ def load_whisper_model():
         logger.info("GPU detected: loading Whisper 'small' on CUDA")
     else:
         device = "cpu"
-        model_name = "base"
+        model_name = "tiny"
         logger.info("No GPU detected: loading Whisper 'base' on CPU")
 
     model = whisper.load_model(model_name, device=device)
