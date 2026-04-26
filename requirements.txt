@@ -7,3 +7,4 @@ python-dotenv
 alembic
 torch
 openai-whisper
+great_expectations
