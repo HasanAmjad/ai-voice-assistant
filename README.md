@@ -291,6 +291,53 @@ Swagger UI available at: `http://localhost:8000/docs`
 
 ---
 
+## Docker Deployment
+
+### Build and Run
+
+```bash
+docker-compose up --build
+```
+
+**First-time setup:**
+- Build time: ~56 minutes (downloads PyTorch, Whisper, scipy, ML libraries)
+- Whisper model download: ~55 seconds on first API startup
+- Total image size: ~7.5GB across 3 services
+
+**Subsequent runs:**
+```bash
+docker-compose up
+```
+
+### Access Services
+
+- **API Swagger UI**: http://localhost:8000/docs
+- **Dashboard**: http://localhost:8501
+- **PostgreSQL**: localhost:5432
+
+### Stop Services
+
+```bash
+docker-compose down
+```
+
+### Verified Components
+
+✅ All 4 containers start successfully  
+✅ Database connection established  
+✅ Whisper model loads automatically  
+✅ API endpoints accessible  
+✅ Dashboard renders correctly  
+✅ JSON structured logging  
+
+### Known Behavior
+
+- First API startup takes ~1 minute (Whisper model download)
+- Status "degraded" is expected until Member 3 trains the ML model
+- Build timeout on slow networks: Retry or use `--build-arg PIP_DEFAULT_TIMEOUT=300`
+
+---
+
 ## Requirements
 
 ```

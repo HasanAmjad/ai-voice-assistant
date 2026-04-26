@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import logging
 import pandas as pd
 import great_expectations as gx
@@ -94,3 +95,9 @@ def run_validation():
 
 if __name__ == "__main__":
     run_validation()
+=======
+def run_validation():
+    print("⚠️  STUB: run_validation() not implemented yet")
+    print("    Expected: Run Great Expectations validation suite")
+    print("")
+>>>>>>> Stashed changes

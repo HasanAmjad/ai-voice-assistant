@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # AI620 VoiceIntent: Transcript Cleaning
 
 import re
@@ -67,3 +68,23 @@ def run_cleaning():
 
 if __name__ == "__main__":
     run_cleaning()
+=======
+def clean_text(text):
+    """
+    Basic cleaning stub - just returns lowercase and stripped text
+    Replace with proper implementation
+    """
+    if not text:
+        return ""
+    
+    text = text.lower()
+    text = text.strip()
+    
+    return text
+
+
+def clean_all_transcripts():
+    print("⚠️  STUB: clean_all_transcripts() not implemented yet")
+    print("    Expected: Normalize all transcripts in database")
+    print("")
+>>>>>>> Stashed changes

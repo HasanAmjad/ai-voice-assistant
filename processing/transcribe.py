@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # AI620 VoiceIntent: Transcription
 
 import logging
@@ -100,3 +101,9 @@ def run_transcription():
 
 if __name__ == "__main__":
     run_transcription()
+=======
+def transcribe_all():
+    print("⚠️  STUB: transcribe_all() not implemented yet")
+    print("    Expected: Transcribe audio files using Whisper and store in DB")
+    print("")
+>>>>>>> Stashed changes
