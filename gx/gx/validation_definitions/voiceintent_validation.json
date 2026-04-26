@@ -1,0 +1,22 @@
+{
+  "data": {
+    "asset": {
+      "id": "b3eae6ec-23af-4475-88a3-760380ad6d53",
+      "name": "transcripts_asset"
+    },
+    "batch_definition": {
+      "id": "1186a398-cb69-4d04-8ee7-0635ace1081a",
+      "name": "batch"
+    },
+    "datasource": {
+      "id": "1e2b2baf-de33-40e5-b516-a5bdde287e3c",
+      "name": "voiceintent_pandas_source"
+    }
+  },
+  "id": "a4c67b52-7f2c-43fd-9126-b5942d2d7dd4",
+  "name": "voiceintent_validation",
+  "suite": {
+    "id": "6474fb66-cb1b-4083-9a9b-0b4fb0feb466",
+    "name": "voiceintent_transcript_suite"
+  }
+}

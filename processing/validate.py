@@ -61,7 +61,7 @@ def run_validation():
         print("UNIQUE INTENTS:", sorted(validation_dataframe['intent_label'].unique()))
         print("SAMPLE BYTES:", [validation_dataframe['intent_label'].iloc[0].encode()])
 
-    context = gx.get_context(mode="ephemeral")
+    context = gx.get_context(mode="file", project_root_dir="gx")
     data_source = context.data_sources.add_pandas(name="voiceintent_pandas_source")
     data_asset = data_source.add_dataframe_asset(name="transcripts_asset")
     batch_definition = data_asset.add_batch_definition_whole_dataframe("batch")

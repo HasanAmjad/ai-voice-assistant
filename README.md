@@ -16,6 +16,23 @@ VoiceIntent simulates a production-grade call-centre intelligence system. The pi
 
 ---
 
+## Current Status
+
+| Step | Script                            | Status                                              |
+| ---- | --------------------------------- | --------------------------------------------------- |
+| 1    | `ingestion/download_dataset.py`   | ✅ Done — 9,993 train + 3,076 test rows             |
+| 2    | `ingestion/synthesize_audio.py`   | ✅ Done — 13,068 `.mp3` files generated             |
+| 3    | `ingestion/store_metadata.py`     | ✅ Done — 13,068 rows in `calls` table              |
+| 4    | `processing/transcribe.py`        | ✅ Done — 13,068 transcripts in `transcripts` table |
+| 5    | `processing/clean.py`             | ✅ Done — all `cleaned_transcript` columns filled   |
+| 6    | `processing/validate.py`          | ✅ Done — all 5 Great Expectations checks passed    |
+| 7    | `ml/prepare_data.py`              | ⬜ Pending Member 3                                 |
+| 8    | `ml/train.py`                     | ⬜ Pending Member 3                                 |
+| 9    | `ml/evaluate.py`                  | ⬜ Pending Member 3                                 |
+| 10   | `serving/api.py` + `dashboard.py` | ⬜ Pending Member 4                                 |
+
+---
+
 ## Prerequisites
 
 - Python 3.11+
@@ -75,7 +92,7 @@ cp .env.example .env
 set PYTHONPATH=D:\path\to\voiceintent
 ```
 
-To set permanently so you don't repeat this every time, add it via Windows Environment Variables (same steps as ffmpeg above).
+To set permanently, add it via Windows Environment Variables (same steps as ffmpeg above).
 
 **6. Add PostgreSQL to PATH (Windows CMD):**
 
@@ -89,6 +106,30 @@ set PATH=%PATH%;C:\Program Files\PostgreSQL\16\bin
 psql -U postgres -h localhost -p 5432 -c "CREATE DATABASE voiceintent;"
 python -c "from storage.db import init_db; init_db(); print('Tables created.')"
 ```
+
+---
+
+## ⚡ Shortcut for Members 3 & 4 — Restore from SQL Dump
+
+You do **not** need to run ingestion or transcription scripts. A complete database dump is available on the shared Google Drive containing all data through Step 6 (calls + transcripts + cleaned transcripts, validated).
+
+**Steps to restore:**
+
+```cmd
+psql -U postgres -h localhost -p 5432 -c "CREATE DATABASE voiceintent;"
+psql -U postgres -h localhost -p 5432 -d voiceintent < voiceintent_dump.sql
+```
+
+After restoring, verify:
+
+```cmd
+psql -U postgres -h localhost -p 5432 -d voiceintent -c "SELECT COUNT(*) FROM calls;"
+psql -U postgres -h localhost -p 5432 -d voiceintent -c "SELECT COUNT(*) FROM transcripts;"
+```
+
+Both should return **13,068**. You can then go straight to your assigned scripts.
+
+> **Note:** Whisper transcriptions are stored directly in PostgreSQL — there are no transcript files on disk. The SQL dump is the only way to transfer this data between machines.
 
 ---
 
@@ -122,34 +163,34 @@ voiceintent/
 ├── config/
 │   └── settings.py             # Centralised config: paths, DB URL, INTENT_NAMES mapping
 │
-├── ingestion/
+├── ingestion/                  # MEMBER 1
 │   ├── download_dataset.py     # Pull BANKING77 from HuggingFace
 │   ├── synthesize_audio.py     # gTTS: text → .mp3 per sample
 │   └── store_metadata.py       # Insert audio metadata into PostgreSQL
 │
-├── processing/
+├── processing/                 # MEMBER 2
 │   ├── transcribe.py           # Whisper: audio → raw transcript
 │   ├── clean.py                # Normalise transcripts
 │   └── validate.py             # Great Expectations suite + checkpoint
 │
-├── storage/
+├── storage/                    # MEMBER 1 (shared schema)
 │   ├── db.py                   # SQLAlchemy engine + session factory
 │   └── models.py               # ORM table definitions — source of truth
 │
-├── ml/
+├── ml/                         # MEMBER 3
 │   ├── prepare_data.py         # Feature extraction + stratified splits
 │   ├── train.py                # Model training + versioned save
 │   ├── evaluate.py             # Accuracy, F1, confusion matrix
 │   └── saved_models/           # model_v{YYYYMMDD_HHMMSS}.pkl + latest_model.pkl
 │
-├── orchestration/
+├── orchestration/              # MEMBER 4
 │   └── pipeline.py             # Prefect flow + tasks + scheduling
 │
-├── serving/
+├── serving/                    # MEMBER 4
 │   ├── api.py                  # FastAPI: /predict, /metrics, /health
 │   └── dashboard.py            # Streamlit dashboard
 │
-├── logging_monitoring/
+├── logging_monitoring/         # MEMBER 4
 │   └── logger.py               # JSON-structured logger
 │
 ├── data/
@@ -185,13 +226,14 @@ Four tables — defined in `storage/models.py`. **Do not modify this file withou
 - `calls.intent_label` stores the **string intent name** (e.g. `card_arrival`), not the integer folder number
 - The integer → intent name mapping lives in `config/settings.py` as `INTENT_NAMES` list
 - `calls.audio_file_path` stores the **absolute path** to the `.mp3` file on disk
+- Whisper transcriptions are saved directly to the `transcripts` table — no files are created on disk
 - All scripts import `INTENT_NAMES` from `config/settings.py` — never hardcode intent names elsewhere
 
 ---
 
 ## Running the Pipeline
 
-### 1 — Data Ingestion (Done ✅)
+### Member 1 — Data Ingestion (Done ✅)
 
 ```cmd
 python ingestion\download_dataset.py
@@ -199,7 +241,7 @@ python ingestion\synthesize_audio.py
 python ingestion\store_metadata.py
 ```
 
-### 2 — Transcription & Cleaning
+### Member 2 — Transcription & Cleaning (Done ✅)
 
 ```cmd
 python processing\transcribe.py   # takes 4-8 hrs on CPU, 30-45 min on GPU
@@ -207,7 +249,16 @@ python processing\clean.py
 python processing\validate.py
 ```
 
-### 3 — ML Training
+**Important for Member 2:**
+
+- Install ffmpeg before running `transcribe.py` (see Prerequisites above)
+- `clean.py` will show "0 transcripts to clean" until `transcribe.py` finishes — this is expected
+- `transcribe.py` is idempotent — if interrupted, re-run and it picks up where it left off
+- To avoid 4-8 hour runtime, run on Google Colab (free GPU) for 30-45 min instead
+
+### Member 3 — ML Training
+
+> Restore from SQL dump first (see Shortcut section above), then run:
 
 ```cmd
 python ml\prepare_data.py
@@ -215,7 +266,9 @@ python ml\train.py
 python ml\evaluate.py
 ```
 
-### 4 — Serving
+### Member 4 — Serving
+
+> Restore from SQL dump first (see Shortcut section above), then run:
 
 ```cmd
 python orchestration\pipeline.py
@@ -225,7 +278,7 @@ python serving\dashboard.py
 
 ---
 
-## API Endpoints
+## API Endpoints (Member 4)
 
 | Endpoint           | Method | Description                                                               |
 | ------------------ | ------ | ------------------------------------------------------------------------- |
@@ -250,6 +303,7 @@ python-dotenv
 alembic
 torch
 openai-whisper
+great-expectations
 ```
 
 ---
@@ -260,30 +314,30 @@ Make sure your `.gitignore` contains:
 
 ```
 .env
-data/
 logs/
 venv/
 ml/saved_models/
 __pycache__/
 *.pyc
+voiceintent_dump.sql
 ```
-
-The `data/` folder is excluded because audio files are too large for Git. Each member regenerates them locally by running the ingestion scripts.
 
 ---
 
 ## Known Issues & Solutions
 
-| Issue                                           | Cause                             | Fix                                                                                |
-| ----------------------------------------------- | --------------------------------- | ---------------------------------------------------------------------------------- |
-| `ModuleNotFoundError: No module named 'config'` | PYTHONPATH not set                | `set PYTHONPATH=D:\path\to\voiceintent`                                            |
-| `psql not recognized`                           | PostgreSQL not in PATH            | `set PATH=%PATH%;C:\Program Files\PostgreSQL\16\bin`                               |
-| `password authentication failed`                | Wrong password in DATABASE_URL    | Check `.env` — must be `postgresql://postgres:PASSWORD@localhost:5432/voiceintent` |
-| `gTTS 429 Too Many Requests`                    | Rate limited by Google TTS API    | Switch network (hotspot), delete zero-byte files, re-run                           |
-| `Whisper FileNotFoundError WinError 2`          | ffmpeg not installed              | Install ffmpeg and add `C:\ffmpeg\bin` to PATH                                     |
-| `SHA256 checksum does not match`                | Corrupted Whisper model download  | `rmdir /s /q C:\Users\<you>\.cache\whisper` then re-run                            |
-| `Dataset scripts no longer supported`           | Legacy HuggingFace dataset format | Use `mteb/banking77` instead of `PolyAI/banking77`                                 |
-| `clean.py found 0 transcripts`                  | `transcripts` table empty         | Run `transcribe.py` first, then `clean.py`                                         |
+| Issue                                           | Cause                               | Fix                                                                                |
+| ----------------------------------------------- | ----------------------------------- | ---------------------------------------------------------------------------------- |
+| `ModuleNotFoundError: No module named 'config'` | PYTHONPATH not set                  | `set PYTHONPATH=D:\path\to\voiceintent`                                            |
+| `psql not recognized`                           | PostgreSQL not in PATH              | `set PATH=%PATH%;C:\Program Files\PostgreSQL\16\bin`                               |
+| `password authentication failed`                | Wrong password in DATABASE_URL      | Check `.env` — must be `postgresql://postgres:PASSWORD@localhost:5432/voiceintent` |
+| `gTTS 429 Too Many Requests`                    | Rate limited by Google TTS API      | Switch network (hotspot), delete zero-byte files, re-run                           |
+| `Whisper FileNotFoundError WinError 2`          | ffmpeg not installed                | Install ffmpeg and add `C:\ffmpeg\bin` to PATH                                     |
+| `SHA256 checksum does not match`                | Corrupted Whisper model download    | `rmdir /s /q C:\Users\<you>\.cache\whisper` then re-run                            |
+| `Dataset scripts no longer supported`           | Legacy HuggingFace dataset format   | Use `mteb/banking77` instead of `PolyAI/banking77`                                 |
+| `clean.py found 0 transcripts`                  | `transcripts` table empty           | Run `transcribe.py` first, then `clean.py`                                         |
+| `EphemeralDataContext has no attribute sources` | GX version incompatibility          | Use `gx.get_context(mode='file', project_root_dir='gx')`                           |
+| `expect_column_values_to_be_in_set failed`      | Intent list mismatch in validate.py | Use INTENT_NAMES from `config/settings.py` as the source of truth                  |
 
 ---
 
