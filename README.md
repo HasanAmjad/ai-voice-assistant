@@ -26,9 +26,9 @@ VoiceIntent simulates a production-grade call-centre intelligence system. The pi
 | 4    | `processing/transcribe.py`        | ✅ Done — 13,068 transcripts in `transcripts` table |
 | 5    | `processing/clean.py`             | ✅ Done — all `cleaned_transcript` columns filled   |
 | 6    | `processing/validate.py`          | ✅ Done — all 5 Great Expectations checks passed    |
-| 7    | `ml/prepare_data.py`              | ⬜ Pending Member 3                                 |
-| 8    | `ml/train.py`                     | ⬜ Pending Member 3                                 |
-| 9    | `ml/evaluate.py`                  | ⬜ Pending Member 3                                 |
+| 7    | `ml/prepare_data.py`              | ✅ Done - TF-IDF vectorizer fitted, 8,493 training samples |
+| 8    | `ml/train.py`                     | ✅ Done - LogisticRegression trained, accuracy 0.8794, model_v20260501 saved|
+| 9    | `ml/evaluate.py`                  | ✅ Accuracy 0.8794, Macro F1 0.8795, confusion matrix + feature importance saved                        |
 | 10   | `serving/api.py` + `dashboard.py` | ⬜ Pending Member 4                                 |
 
 ---
@@ -258,13 +258,43 @@ python processing\validate.py
 
 ### Member 3 — ML Training
 
-> Restore from SQL dump first (see Shortcut section above), then run:
+## Member 3 — ML / Intent Classification (Lina)
 
-```cmd
-python ml\prepare_data.py
-python ml\train.py
-python ml\evaluate.py
-```
+### Status: COMPLETE
+
+### Files Added
+| File | Purpose |
+|------|---------|
+| ml/prepare_data.py | Loads cleaned transcripts from DB, fits TF-IDF vectorizer, stratified train/val/test split |
+| ml/train.py | Trains LogisticRegression classifier, saves versioned model, inserts into model_runs table |
+| ml/evaluate.py | Computes accuracy/F1, saves confusion matrix PNG, feature importance JSON, drift detection |
+| ml/export_for_kaggle.py | Utility to export DB transcripts to CSV for Kaggle training |
+| ml/saved_models/latest_model.pkl | Trained model ready for serving |
+| ml/saved_models/tfidf_vectorizer.pkl | Fitted vectorizer — must be loaded alongside model |
+| ml/saved_models/label_encoder.pkl | Label encoder for 77 intent classes |
+| ml/saved_models/latest_model.txt | Contains current model version tag |
+| config/intent_responses.json | Canned response text for all 77 intents |
+| docs/confusion_matrix.png | Confusion matrix heatmap (20 most confused intents) |
+| docs/feature_importance.json | Top 10 TF-IDF tokens per intent |
+| docs/metrics.json | Final evaluation metrics |
+
+### Results
+- Training samples: 8,493 (from Whisper-transcribed audio)
+- Test accuracy: 0.8794
+- Macro F1: 0.8795
+- Drift score: 0.0911 (no alert, threshold is 0.15)
+- Classes: 77 intents
+
+### How to Run
+python ml\prepare_data.py   # loads DB, fits vectorizer
+python ml\train.py          # trains and saves model
+python ml\evaluate.py       # full evaluation + saves all artifacts
+
+### How It Fits Into the Pipeline
+- Reads from: transcripts + calls tables in PostgreSQL (output of Members 1 & 2)
+- Saves to: ml/saved_models/ (consumed by Member 4 serving/api.py)
+- Member 4 loads latest_model.pkl + tfidf_vectorizer.pkl + label_encoder.pkl at API startup
+- intent_responses.json maps predicted intent to canned reply text returned to caller
 
 ### Member 4 — Serving
 
