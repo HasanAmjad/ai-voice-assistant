@@ -1,0 +1,33 @@
+.git
+.gitignore
+.venv
+venv
+env
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.idea
+.vscode
+.DS_Store
+**/.DS_Store
+
+# logs are mounted as a volume
+logs
+
+# 3 GB of audio + raw CSVs are mounted as a volume; no need in image
+data/audio
+data/raw
+
+# regenerable; mounted from host
+ml/saved_models/response_audio
+ml/saved_models/last_data_hash.txt
+ml/whisper_transcripts_export.csv
+
+# documentation artifacts not needed inside containers
+docs
+
+# the dump itself is mounted into the postgres init dir
+voiceintent_dump.sql

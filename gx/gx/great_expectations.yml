@@ -83,15 +83,15 @@ data_docs_sites:
 fluent_datasources:
   voiceintent_pandas_source:
     type: pandas
-    id: 1e2b2baf-de33-40e5-b516-a5bdde287e3c
+    id: 65f26f94-26e9-4a7d-8845-9ad626d67658
     assets:
       transcripts_asset:
         type: dataframe
-        id: b3eae6ec-23af-4475-88a3-760380ad6d53
+        id: bfc09471-a129-4c12-b5c1-a1cfd6984417
         batch_metadata: {}
         batch_definitions:
           batch:
-            id: 1186a398-cb69-4d04-8ee7-0635ace1081a
+            id: 8c50f351-8416-464e-bbd1-75aa1deff8b5
             partitioner:
 analytics_enabled:
 data_context_id: b698ed63-0179-4907-a1c9-8a19068f3494

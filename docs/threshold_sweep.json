@@ -1,0 +1,160 @@
+{
+  "n_test_samples": 3076,
+  "selected_threshold": 0.4,
+  "commentary": "At threshold 0.4: escalates 23.3% of 3076 test calls (716.0 of 3076). On the 2360.0 kept predictions the model is 95.9% accurate; only 3.2% of *all* calls receive a confidently-wrong canned reply, while 73.5% are auto-handled correctly. Raising to 0.5 would push escalation to 30.8% and reduce wrong-routing to 2.1%. Lowering to 0.3 would drop escalation to 15.7% but raise wrong-routing to 4.9%.",
+  "rows": [
+    {
+      "threshold": 0.1,
+      "escalation_rate": 0.0185,
+      "precision_confident": 0.8907,
+      "wrong_routed_rate": 0.1073,
+      "coverage_correct_rate": 0.8742,
+      "n_confident": 3019,
+      "n_escalated": 57
+    },
+    {
+      "threshold": 0.15,
+      "escalation_rate": 0.0533,
+      "precision_confident": 0.9083,
+      "wrong_routed_rate": 0.0868,
+      "coverage_correct_rate": 0.8599,
+      "n_confident": 2912,
+      "n_escalated": 164
+    },
+    {
+      "threshold": 0.2,
+      "escalation_rate": 0.0836,
+      "precision_confident": 0.9191,
+      "wrong_routed_rate": 0.0741,
+      "coverage_correct_rate": 0.8423,
+      "n_confident": 2819,
+      "n_escalated": 257
+    },
+    {
+      "threshold": 0.25,
+      "escalation_rate": 0.1209,
+      "precision_confident": 0.9301,
+      "wrong_routed_rate": 0.0614,
+      "coverage_correct_rate": 0.8176,
+      "n_confident": 2704,
+      "n_escalated": 372
+    },
+    {
+      "threshold": 0.3,
+      "escalation_rate": 0.157,
+      "precision_confident": 0.9418,
+      "wrong_routed_rate": 0.0491,
+      "coverage_correct_rate": 0.7939,
+      "n_confident": 2593,
+      "n_escalated": 483
+    },
+    {
+      "threshold": 0.35,
+      "escalation_rate": 0.1938,
+      "precision_confident": 0.9504,
+      "wrong_routed_rate": 0.04,
+      "coverage_correct_rate": 0.7663,
+      "n_confident": 2480,
+      "n_escalated": 596
+    },
+    {
+      "threshold": 0.4,
+      "escalation_rate": 0.2328,
+      "precision_confident": 0.9585,
+      "wrong_routed_rate": 0.0319,
+      "coverage_correct_rate": 0.7354,
+      "n_confident": 2360,
+      "n_escalated": 716
+    },
+    {
+      "threshold": 0.45,
+      "escalation_rate": 0.2698,
+      "precision_confident": 0.9644,
+      "wrong_routed_rate": 0.026,
+      "coverage_correct_rate": 0.7042,
+      "n_confident": 2246,
+      "n_escalated": 830
+    },
+    {
+      "threshold": 0.5,
+      "escalation_rate": 0.3075,
+      "precision_confident": 0.9695,
+      "wrong_routed_rate": 0.0211,
+      "coverage_correct_rate": 0.6713,
+      "n_confident": 2130,
+      "n_escalated": 946
+    },
+    {
+      "threshold": 0.55,
+      "escalation_rate": 0.3485,
+      "precision_confident": 0.9731,
+      "wrong_routed_rate": 0.0176,
+      "coverage_correct_rate": 0.6339,
+      "n_confident": 2004,
+      "n_escalated": 1072
+    },
+    {
+      "threshold": 0.6,
+      "escalation_rate": 0.3979,
+      "precision_confident": 0.98,
+      "wrong_routed_rate": 0.012,
+      "coverage_correct_rate": 0.5901,
+      "n_confident": 1852,
+      "n_escalated": 1224
+    },
+    {
+      "threshold": 0.65,
+      "escalation_rate": 0.4444,
+      "precision_confident": 0.9848,
+      "wrong_routed_rate": 0.0085,
+      "coverage_correct_rate": 0.5471,
+      "n_confident": 1709,
+      "n_escalated": 1367
+    },
+    {
+      "threshold": 0.7,
+      "escalation_rate": 0.499,
+      "precision_confident": 0.9877,
+      "wrong_routed_rate": 0.0062,
+      "coverage_correct_rate": 0.4948,
+      "n_confident": 1541,
+      "n_escalated": 1535
+    },
+    {
+      "threshold": 0.75,
+      "escalation_rate": 0.5611,
+      "precision_confident": 0.9904,
+      "wrong_routed_rate": 0.0042,
+      "coverage_correct_rate": 0.4347,
+      "n_confident": 1350,
+      "n_escalated": 1726
+    },
+    {
+      "threshold": 0.8,
+      "escalation_rate": 0.6261,
+      "precision_confident": 0.993,
+      "wrong_routed_rate": 0.0026,
+      "coverage_correct_rate": 0.3713,
+      "n_confident": 1150,
+      "n_escalated": 1926
+    },
+    {
+      "threshold": 0.85,
+      "escalation_rate": 0.6928,
+      "precision_confident": 0.9947,
+      "wrong_routed_rate": 0.0016,
+      "coverage_correct_rate": 0.3056,
+      "n_confident": 945,
+      "n_escalated": 2131
+    },
+    {
+      "threshold": 0.9,
+      "escalation_rate": 0.7828,
+      "precision_confident": 0.9925,
+      "wrong_routed_rate": 0.0016,
+      "coverage_correct_rate": 0.2155,
+      "n_confident": 668,
+      "n_escalated": 2408
+    }
+  ]
+}

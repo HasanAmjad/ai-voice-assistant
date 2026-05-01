@@ -1,6 +1,10 @@
-# coding: utf-8
-# AI620 VoiceIntent: Feature Preparation -- Member 3
-import os, sys, hashlib, logging, joblib
+"""Authored by: Lina."""
+
+import os
+import sys
+import hashlib
+import logging
+import joblib
 from pathlib import Path
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -20,6 +24,7 @@ SAVED_MODELS_DIR.mkdir(exist_ok=True)
 
 
 def prepare_features():
+    """Load cleaned transcripts, fit a TF-IDF vectorizer, and return train/val/test splits."""
     logger.info("Loading cleaned transcripts from database...")
     with get_session() as session:
         result = session.execute(text("""
@@ -35,7 +40,7 @@ def prepare_features():
     logger.info(f"Loaded {len(df):,} rows | {df['intent_label'].nunique()} intents")
 
     train_df = df[df["split"] == "train"].reset_index(drop=True)
-    test_df  = df[df["split"] == "test"].reset_index(drop=True)
+    test_df = df[df["split"] == "test"].reset_index(drop=True)
 
     data_hash = hashlib.sha256(train_df["cleaned_transcript"].to_csv().encode()).hexdigest()
     logger.info(f"Data hash: {data_hash}")
@@ -54,26 +59,26 @@ def prepare_features():
         min_df=2,
     )
     X_train_raw = vectorizer.fit_transform(train_df["cleaned_transcript"])
-    X_test_raw  = vectorizer.transform(test_df["cleaned_transcript"])
+    X_test_raw = vectorizer.transform(test_df["cleaned_transcript"])
     logger.info(f"Vocab: {len(vectorizer.vocabulary_):,} | Train matrix: {X_train_raw.shape}")
 
     le = LabelEncoder()
     y_train_all = le.fit_transform(train_df["intent_label"])
-    y_test      = le.transform(test_df["intent_label"])
+    y_test = le.transform(test_df["intent_label"])
     logger.info(f"Classes: {len(le.classes_)}")
 
     sss = StratifiedShuffleSplit(n_splits=1, test_size=0.15, random_state=42)
     train_idx, val_idx = next(sss.split(X_train_raw, y_train_all))
 
     X_train = X_train_raw[train_idx]
-    X_val   = X_train_raw[val_idx]
+    X_val = X_train_raw[val_idx]
     y_train = y_train_all[train_idx]
-    y_val   = y_train_all[val_idx]
+    y_val = y_train_all[val_idx]
 
     logger.info(f"Split -- Train: {X_train.shape[0]:,} | Val: {X_val.shape[0]:,} | Test: {X_test_raw.shape[0]:,}")
 
     joblib.dump(vectorizer, SAVED_MODELS_DIR / "tfidf_vectorizer.pkl")
-    joblib.dump(le,         SAVED_MODELS_DIR / "label_encoder.pkl")
+    joblib.dump(le, SAVED_MODELS_DIR / "label_encoder.pkl")
     logger.info("Saved tfidf_vectorizer.pkl and label_encoder.pkl")
 
     return {

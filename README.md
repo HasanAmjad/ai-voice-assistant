@@ -2,34 +2,97 @@
 
 ### An Intelligent Voice Assistant for Customer Support
 
-**AI 620: Fundamentals of Data Engineering · LUMS**
+---
+
+## Overview
+
+VoiceIntent is an end-to-end voice-to-intent pipeline. It ingests BANKING77 customer queries, synthesises speech via gTTS, transcribes audio back with OpenAI Whisper, validates transcripts with Great Expectations, trains an intent classifier on the cleaned data, and serves live predictions through a FastAPI backend with a Streamlit dashboard. The whole pipeline is orchestrated with Prefect and packaged with Docker.
+
+**Dataset:** BANKING77 — 13,069 real customer queries across 77 fine-grained banking intents.
+
+**Headline numbers (current model):**
+
+| Metric | Value |
+| ------ | ----- |
+| Test accuracy | 0.8791 |
+| Macro F1 | 0.8792 |
+| Drift score (test vs train distribution) | 0.0907 |
+| Threshold-policy precision when not escalated | 95.9% |
+| Threshold-policy escalation rate | 23.3% |
 
 ---
 
-## Project Overview
+## Architecture
 
-VoiceIntent simulates a production-grade call-centre intelligence system. The pipeline ingests BANKING77 text queries, synthesises speech audio via gTTS, transcribes audio back with OpenAI Whisper, validates transcript quality with Great Expectations, trains an intent classifier, and serves predictions through a FastAPI endpoint — all orchestrated end-to-end with Prefect inside Docker.
+```mermaid
+flowchart TB
+    subgraph INGEST["📥 Ingestion"]
+        HF["HuggingFace<br/>BANKING77"] --> DL["download_dataset.py"]
+        DL --> CSV["Raw CSVs"]
+        CSV --> SYN["synthesize_audio.py<br/>(gTTS)"]
+        SYN --> MP3["13k .mp3 files"]
+        MP3 --> META["store_metadata.py"]
+    end
 
-**Dataset:** BANKING77 — 13,069 real customer queries across 77 fine-grained banking intents (e.g. `transfer_not_received`, `card_swallowed`, `exchange_rate`).
+    subgraph PROCESS["🎙️ Processing"]
+        TR["transcribe.py<br/>(Whisper)"]
+        CL["clean.py"]
+        VAL["validate.py<br/>(Great Expectations)"]
+        TR --> CL --> VAL
+    end
 
-**Problem Statement:** Despite the rise of text-based chatbots, voice calls remain the dominant channel for customer support — yet most call centres still rely on manual agents to interpret caller intent in real time. This creates bottlenecks, inconsistent service quality, and high operational costs. VoiceIntent addresses this gap by building a production-grade, end-to-end pipeline that automatically converts raw customer audio into classified intents — from speech synthesis and transcription to ML classification and live API serving.
+    subgraph DB[("🗄️ PostgreSQL")]
+        CALLS[(calls)]
+        TRANS[(transcripts)]
+        PRED[(predictions)]
+        MR[(model_runs)]
+    end
 
----
+    subgraph ML["🤖 ML Training"]
+        PD["prepare_data.py<br/>(TF-IDF)"]
+        TRAIN["train.py<br/>(LogisticRegression)"]
+        EV["evaluate.py<br/>(metrics + drift)"]
+        SWEEP["threshold_sweep.py"]
+        PD --> TRAIN --> EV
+        TRAIN --> SWEEP
+    end
 
-## Current Status
+    subgraph SERVE["🛎️ Serving"]
+        USER([👤 User audio])
+        API["FastAPI<br/>/predict"]
+        WHISP2["Whisper<br/>transcribe"]
+        CLF["Classifier"]
+        GATE{"Confidence<br/>≥ threshold?"}
+        TTS["gTTS<br/>(cached on disk)"]
+        ESC["Escalation<br/>handoff"]
+        DASH["Streamlit<br/>Dashboard"]
 
-| Step | Script                            | Status                                              |
-| ---- | --------------------------------- | --------------------------------------------------- |
-| 1    | `ingestion/download_dataset.py`   | ✅ Done — 9,993 train + 3,076 test rows             |
-| 2    | `ingestion/synthesize_audio.py`   | ✅ Done — 13,068 `.mp3` files generated             |
-| 3    | `ingestion/store_metadata.py`     | ✅ Done — 13,068 rows in `calls` table              |
-| 4    | `processing/transcribe.py`        | ✅ Done — 13,068 transcripts in `transcripts` table |
-| 5    | `processing/clean.py`             | ✅ Done — all `cleaned_transcript` columns filled   |
-| 6    | `processing/validate.py`          | ✅ Done — all 5 Great Expectations checks passed    |
-| 7    | `ml/prepare_data.py`              | ✅ Done - TF-IDF vectorizer fitted, 8,493 training samples |
-| 8    | `ml/train.py`                     | ✅ Done - LogisticRegression trained, accuracy 0.8794, model_v20260501 saved|
-| 9    | `ml/evaluate.py`                  | ✅ Accuracy 0.8794, Macro F1 0.8795, confusion matrix + feature importance saved                        |
-| 10   | `serving/api.py` + `dashboard.py` | ⬜ Pending Member 4                                 |
+        USER --> API --> WHISP2 --> CLF --> GATE
+        GATE -- yes --> TTS
+        GATE -- no --> ESC
+        TTS --> DASH
+        ESC --> DASH
+    end
+
+    META --> CALLS
+    CALLS --> TR
+    TR --> TRANS
+    CL --> TRANS
+    TRANS --> PD
+    EV --> MR
+    CLF --> PRED
+    MR --> API
+    PRED --> DASH
+
+    PREFECT["⚙️ Prefect<br/>orchestration/pipeline.py"]:::orchestration
+    PREFECT -.-> INGEST
+    PREFECT -.-> PROCESS
+    PREFECT -.-> ML
+
+    classDef orchestration fill:#ffe4b5,stroke:#cc8800,color:#333
+```
+
+The Prefect flow runs every stage in dependency order; each task is idempotent so partial reruns are cheap. At inference time, the FastAPI service holds the trained model + Whisper in memory and answers `/predict` with both the predicted intent and a synthesized voice reply (cached on disk after the first synthesis per intent).
 
 ---
 
@@ -37,404 +100,225 @@ VoiceIntent simulates a production-grade call-centre intelligence system. The pi
 
 - Python 3.11+
 - PostgreSQL 16
-- ffmpeg — **required by Whisper for audio loading**
-- Docker Desktop (for final integration only)
-- Node.js (for orchestration dependencies)
+- ffmpeg (Whisper requires it for audio decoding)
+- Docker Desktop (only for the containerised path)
 
-### Installing ffmpeg (Windows) — Critical
-
-Whisper uses ffmpeg internally to load `.mp3` files. Without it, transcription fails entirely.
-
-1. Download from https://www.gyan.dev/ffmpeg/builds/ → `ffmpeg-release-essentials.zip`
-2. Extract to `C:\ffmpeg`
-3. Add to PATH permanently via Windows → Start → Search "Environment Variables" → System Variables → Path → New → `C:\ffmpeg\bin`
-4. Verify: `ffmpeg -version`
+```bash
+# macOS
+brew install ffmpeg postgresql@16
+```
 
 ---
 
-## Quick Start (Local Development)
-
-**1. Clone the repo and navigate into it:**
+## Quick start (local)
 
 ```bash
-git clone <repo-url>
-cd voiceintent
-```
-
-**2. Create and activate virtual environment:**
-
-```bash
-# Windows
-python -m venv venv
-venv\Scripts\activate
-
-# Mac/Linux
-python -m venv venv
-source venv/bin/activate
-```
-
-**3. Install dependencies:**
-
-```bash
+# 1. Clone, enter, create venv
+git clone <repo-url> && cd voiceintent
+python3.11 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
+export PYTHONPATH="$PWD"
+
+# 2. Copy env template and fill in DB password + HF token
+cp .env.example .env
+# DATABASE_URL=postgresql://postgres:PASSWORD@localhost:5432/voiceintent
+# HF_TOKEN=...
+
+# 3. Restore the database from the shared dump (fastest path)
+psql -U postgres -h localhost -p 5432 -d postgres -c "DROP DATABASE IF EXISTS voiceintent;"
+psql -U postgres -h localhost -p 5432 -d postgres -c "CREATE DATABASE voiceintent;"
+psql -U postgres -h localhost -p 5432 -d voiceintent < voiceintent_dump.sql
+
+# 4. Run the orchestrated pipeline (skips training if a model is already present)
+python orchestration/pipeline.py
+
+# 5. Start API + dashboard in two terminals
+python serving/api.py                          # http://localhost:8000
+streamlit run serving/dashboard.py             # http://localhost:8501
 ```
 
-**4. Set up environment variables:**
+> The dump's `audio_file_path` values are absolute paths from the original machine. If the pipeline complains about pending transcriptions after restore, run:
+> ```sql
+> UPDATE calls SET audio_file_path =
+>   '<your-project-root>/data/audio/' ||
+>   REPLACE(SUBSTRING(audio_file_path FROM POSITION('data\audio\' IN audio_file_path) + 11), '\', '/');
+> ```
+
+---
+
+## Running from scratch (without the dump)
+
+If you want to regenerate everything yourself instead of using the shared dump:
 
 ```bash
-cp .env.example .env
-# Edit .env and fill in your values
-```
-
-**5. Set PYTHONPATH (Windows CMD) — required every new session:**
-
-```cmd
-set PYTHONPATH=D:\path\to\voiceintent
-```
-
-To set permanently, add it via Windows Environment Variables (same steps as ffmpeg above).
-
-**6. Add PostgreSQL to PATH (Windows CMD):**
-
-```cmd
-set PATH=%PATH%;C:\Program Files\PostgreSQL\16\bin
-```
-
-**7. Create the database and initialize tables:**
-
-```cmd
 psql -U postgres -h localhost -p 5432 -c "CREATE DATABASE voiceintent;"
-python -c "from storage.db import init_db; init_db(); print('Tables created.')"
+python -c "from storage.db import init_db; init_db()"
+
+python ingestion/download_dataset.py
+python ingestion/synthesize_audio.py    # ~2 hr (rate-limited by gTTS)
+python ingestion/store_metadata.py
+python processing/transcribe.py         # 4-8 hr CPU, ~30 min GPU
+python processing/clean.py
+python processing/validate.py
+python ml/prepare_data.py
+python ml/train.py
+python ml/evaluate.py
+python ml/threshold_sweep.py
+```
+
+Or run all of them through the Prefect flow:
+
+```bash
+python orchestration/pipeline.py
 ```
 
 ---
 
-## ⚡ Shortcut for Members 3 & 4 — Restore from SQL Dump
+## API endpoints
 
-You do **not** need to run ingestion or transcription scripts. A complete database dump is available on the shared Google Drive containing all data through Step 6 (calls + transcripts + cleaned transcripts, validated).
+Base URL: `http://localhost:8000` · Swagger UI at `/docs`.
 
-**Steps to restore:**
+| Method | Path | Description |
+| ------ | ---- | ----------- |
+| `POST` | `/predict` | Upload audio (mp3/wav/webm). Returns predicted intent, confidence, transcript, canned response text, and an audio URL. Persists the prediction to the DB. |
+| `GET`  | `/intent_response/{intent}` | Streams the gTTS-rendered MP3 reply for a given intent. Cached in memory and on disk. |
+| `GET`  | `/escalation` | Streams the gTTS-rendered "redirecting to an agent" message used when confidence is below threshold. |
+| `GET`  | `/metrics` | Prediction-distribution stats and the current model's training metrics. |
+| `GET`  | `/drift?window=N` | Live drift score: JS divergence between the most recent N predictions and the prior N. Returns `ready: false` if there are fewer than `2N` predictions. |
+| `GET`  | `/pipeline/status` | Most recent training-pipeline run summary. |
+| `GET`  | `/health` | API, DB, Whisper, classifier readiness. |
 
-```cmd
-psql -U postgres -h localhost -p 5432 -c "CREATE DATABASE voiceintent;"
-psql -U postgres -h localhost -p 5432 -d voiceintent < voiceintent_dump.sql
+### `/predict` response shape
+
+```json
+{
+  "intent": "card_blocked",
+  "confidence": 0.5852,
+  "confidence_threshold": 0.4,
+  "escalated": false,
+  "transcript": "i need my card now",
+  "raw_transcript": " I need my card now.",
+  "model_version": "model_v20260501_191559",
+  "response_text": "It appears that you are asking about card blocked. ...",
+  "response_audio_url": "/intent_response/card_blocked",
+  "top_5_intents": [ {"intent": "...", "confidence": ...}, ... ]
+}
 ```
 
-After restoring, verify:
-
-```cmd
-psql -U postgres -h localhost -p 5432 -d voiceintent -c "SELECT COUNT(*) FROM calls;"
-psql -U postgres -h localhost -p 5432 -d voiceintent -c "SELECT COUNT(*) FROM transcripts;"
-```
-
-Both should return **13,068**. You can then go straight to your assigned scripts.
-
-> **Note:** Whisper transcriptions are stored directly in PostgreSQL — there are no transcript files on disk. The SQL dump is the only way to transfer this data between machines.
+When `confidence < confidence_threshold`, `escalated` is `true`, `response_text` is replaced with the agent-handoff message, and `response_audio_url` becomes `/escalation`.
 
 ---
 
-## Environment Variables
+## Dashboard
 
-Copy `.env.example` to `.env` and fill in:
+Streamlit UI on `http://localhost:8501` with three tabs:
+
+- **🎯 Predict** — Record from microphone *or* upload a file. Shows the predicted intent, confidence vs. threshold, the transcript, a synthesized voice reply, and a top-5 candidates chart with the predicted intent visually highlighted and the threshold drawn as a dashed line.
+- **📊 Analytics** — Total predictions, average confidence, model accuracy, drift status, a 📞 Recent Calls table (last 10 with transcript + routing badge), a 🌀 Live Distribution Drift card with top movers, and the intent distribution chart.
+- **⚙️ Pipeline Status** — Latest Prefect run, model training history, accuracy trend, and a system health panel.
+
+### Try the dashboard without recording
+
+Five sample MP3s ship with the repo under `data/audio/samples/` so you can hit the **Predict** tab and upload one without setting up a microphone:
+
+| File | Expected outcome |
+| ---- | ---------------- |
+| `card_blocked.mp3` | Confident `card_blocked` reply (≈ 0.59) |
+| `cancel_transfer.mp3` | Confident `cancel_transfer` reply |
+| `lost_or_stolen_card.mp3` | Confident `lost_or_stolen_card` reply |
+| `card_swallowed.mp3` | Confident `card_swallowed` reply |
+| `automatic_top_up.mp3` | Low confidence (≈ 0.26) — **demonstrates the agent-handoff escalation path** |
+
+---
+
+## Configuration knobs
+
+All in `config/settings.py`:
+
+| Setting | Default | Effect |
+| ------- | ------- | ------ |
+| `CONFIDENCE_THRESHOLD` | `0.4` | Predictions below this confidence are routed to the escalation path. Backed by the threshold sweep in `docs/threshold_sweep.png`. |
+| `LOW_CONFIDENCE_RESPONSE` | text | Sentence spoken to the caller when escalating. |
+| `INTENT_NAMES` | 77 entries | Folder-index → intent-name mapping for `store_metadata.py`. Source of truth for intent labels. |
+
+Environment variables (`.env`):
 
 ```env
-HF_TOKEN=your_huggingface_token_here
-DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/voiceintent
+HF_TOKEN=hf_...
+DATABASE_URL=postgresql://postgres:PASSWORD@localhost:5432/voiceintent
 POSTGRES_USER=postgres
-POSTGRES_PASSWORD=YOUR_PASSWORD
+POSTGRES_PASSWORD=PASSWORD
 POSTGRES_DB=voiceintent
+FORCE_RETRAIN=1   # optional: forces train.py to retrain even when artifacts exist
 ```
-
-Get your HuggingFace token at: https://huggingface.co/settings/tokens
 
 ---
 
-## Folder Structure
+## Database schema
+
+| Table | Purpose | Key columns |
+| ----- | ------- | ----------- |
+| `calls` | One row per audio file | `audio_file_path` (unique), `intent_label`, `split` |
+| `transcripts` | Whisper output per call | `call_id` (FK, unique), `raw_transcript`, `cleaned_transcript` |
+| `predictions` | API prediction log | `predicted_intent`, `confidence_score`, `cleaned_transcript`, `model_version` |
+| `model_runs` | Training-run metrics | `model_version`, `accuracy`, `macro_f1`, `drift_score`, `data_hash`, `training_samples` |
+
+The full ORM definition is in `storage/models.py`.
+
+---
+
+## Folder structure
 
 ```
 voiceintent/
-├── .env                        # DB credentials, HF_TOKEN — never commit
-├── .env.example                # Template for teammates
-├── docker-compose.yml
-├── Dockerfile
-├── requirements.txt
-├── README.md
-│
 ├── config/
-│   └── settings.py             # Centralised config: paths, DB URL, INTENT_NAMES mapping
-│
-├── ingestion/                  # MEMBER 1
-│   ├── download_dataset.py     # Pull BANKING77 from HuggingFace
-│   ├── synthesize_audio.py     # gTTS: text → .mp3 per sample
-│   └── store_metadata.py       # Insert audio metadata into PostgreSQL
-│
-├── processing/                 # MEMBER 2
-│   ├── transcribe.py           # Whisper: audio → raw transcript
-│   ├── clean.py                # Normalise transcripts
-│   └── validate.py             # Great Expectations suite + checkpoint
-│
-├── storage/                    # MEMBER 1 (shared schema)
-│   ├── db.py                   # SQLAlchemy engine + session factory
-│   └── models.py               # ORM table definitions — source of truth
-│
-├── ml/                         # MEMBER 3
-│   ├── prepare_data.py         # Feature extraction + stratified splits
-│   ├── train.py                # Model training + versioned save
-│   ├── evaluate.py             # Accuracy, F1, confusion matrix
-│   └── saved_models/           # model_v{YYYYMMDD_HHMMSS}.pkl + latest_model.pkl
-│
-├── orchestration/              # MEMBER 4
-│   └── pipeline.py             # Prefect flow + tasks + scheduling
-│
-├── serving/                    # MEMBER 4
-│   ├── api.py                  # FastAPI: /predict, /metrics, /health
-│   └── dashboard.py            # Streamlit dashboard
-│
-├── logging_monitoring/         # MEMBER 4
-│   └── logger.py               # JSON-structured logger
-│
-├── data/
-│   ├── audio/                  # Generated .mp3 files (not committed to Git)
-│   │   ├── train/              # Subfolders by intent label number (0-76)
-│   │   └── test/
-│   └── raw/                    # Downloaded CSV snapshots (not committed to Git)
-│
-├── gx/                         # Great Expectations project root
-│   ├── expectations/
-│   └── checkpoints/
-│
-└── docs/
-    ├── architecture.png
-    └── schema.png
+│   ├── settings.py            # paths, DB URL, INTENT_NAMES, CONFIDENCE_THRESHOLD
+│   └── intent_responses.json  # canned reply sentence per intent
+├── ingestion/                 # download · synthesize · store metadata
+├── processing/                # transcribe · clean · validate (GX)
+├── storage/                   # SQLAlchemy ORM + session factory
+├── ml/                        # prepare_data · train · evaluate · threshold_sweep
+│   └── saved_models/          # versioned classifier + vectorizer + label encoder + cached MP3s
+├── orchestration/             # Prefect flow
+├── serving/                   # FastAPI + Streamlit
+├── logging_monitoring/        # JSON-structured logger
+├── data/                      # audio + raw CSVs (not committed)
+├── gx/                        # Great Expectations project root
+├── docs/                      # generated metrics, plots, sweep results
+├── voiceintent_dump.sql       # shared full-DB snapshot
+├── docker-compose.yml         # multi-container deployment
+├── Dockerfile
+└── requirements.txt
 ```
 
 ---
 
-## Database Schema
-
-Four tables — defined in `storage/models.py`. **Do not modify this file without team consensus.**
-
-| Table         | Purpose                    | Written by                           |
-| ------------- | -------------------------- | ------------------------------------ |
-| `calls`       | One row per audio file     | Member 1 (`store_metadata.py`)       |
-| `transcripts` | Whisper output per call    | Member 2 (`transcribe.py`)           |
-| `predictions` | Model predictions per call | Member 4 (`api.py`)                  |
-| `model_runs`  | Training metrics per run   | Member 3 (`train.py`, `evaluate.py`) |
-
-### Important Notes on Schema
-
-- `calls.intent_label` stores the **string intent name** (e.g. `card_arrival`), not the integer folder number
-- The integer → intent name mapping lives in `config/settings.py` as `INTENT_NAMES` list
-- `calls.audio_file_path` stores the **absolute path** to the `.mp3` file on disk
-- Whisper transcriptions are saved directly to the `transcripts` table — no files are created on disk
-- All scripts import `INTENT_NAMES` from `config/settings.py` — never hardcode intent names elsewhere
-
----
-
-## Running the Pipeline
-
-### Member 1 — Data Ingestion (Done ✅)
-
-```cmd
-python ingestion\download_dataset.py
-python ingestion\synthesize_audio.py
-python ingestion\store_metadata.py
-```
-
-### Member 2 — Transcription & Cleaning (Done ✅)
-
-```cmd
-python processing\transcribe.py   # takes 4-8 hrs on CPU, 30-45 min on GPU
-python processing\clean.py
-python processing\validate.py
-```
-
-**Important for Member 2:**
-
-- Install ffmpeg before running `transcribe.py` (see Prerequisites above)
-- `clean.py` will show "0 transcripts to clean" until `transcribe.py` finishes — this is expected
-- `transcribe.py` is idempotent — if interrupted, re-run and it picks up where it left off
-- To avoid 4-8 hour runtime, run on Google Colab (free GPU) for 30-45 min instead
-
-### Member 3 — ML Training
-
-## Member 3 — ML / Intent Classification (Lina)
-
-### Status: COMPLETE
-
-### Files Added
-| File | Purpose |
-|------|---------|
-| ml/prepare_data.py | Loads cleaned transcripts from DB, fits TF-IDF vectorizer, stratified train/val/test split |
-| ml/train.py | Trains LogisticRegression classifier, saves versioned model, inserts into model_runs table |
-| ml/evaluate.py | Computes accuracy/F1, saves confusion matrix PNG, feature importance JSON, drift detection |
-| ml/export_for_kaggle.py | Utility to export DB transcripts to CSV for Kaggle training |
-| ml/saved_models/latest_model.pkl | Trained model ready for serving |
-| ml/saved_models/tfidf_vectorizer.pkl | Fitted vectorizer — must be loaded alongside model |
-| ml/saved_models/label_encoder.pkl | Label encoder for 77 intent classes |
-| ml/saved_models/latest_model.txt | Contains current model version tag |
-| config/intent_responses.json | Canned response text for all 77 intents |
-| docs/confusion_matrix.png | Confusion matrix heatmap (20 most confused intents) |
-| docs/feature_importance.json | Top 10 TF-IDF tokens per intent |
-| docs/metrics.json | Final evaluation metrics |
-
-### Results
-- Training samples: 8,493 (from Whisper-transcribed audio)
-- Test accuracy: 0.8794
-- Macro F1: 0.8795
-- Drift score: 0.0911 (no alert, threshold is 0.15)
-- Classes: 77 intents
-
-### How to Run
-python ml\prepare_data.py   # loads DB, fits vectorizer
-python ml\train.py          # trains and saves model
-python ml\evaluate.py       # full evaluation + saves all artifacts
-
-### How It Fits Into the Pipeline
-- Reads from: transcripts + calls tables in PostgreSQL (output of Members 1 & 2)
-- Saves to: ml/saved_models/ (consumed by Member 4 serving/api.py)
-- Member 4 loads latest_model.pkl + tfidf_vectorizer.pkl + label_encoder.pkl at API startup
-- intent_responses.json maps predicted intent to canned reply text returned to caller
-
-### Member 4 — Serving
-
-> Restore from SQL dump first (see Shortcut section above), then run:
-
-```cmd
-python orchestration\pipeline.py
-python serving\api.py
-python serving\dashboard.py
-```
-
----
-
-## API Endpoints (Member 4)
-
-| Endpoint           | Method | Description                                                               |
-| ------------------ | ------ | ------------------------------------------------------------------------- |
-| `/predict`         | POST   | Upload `.mp3` → returns `{intent, confidence, transcript, model_version}` |
-| `/metrics`         | GET    | Intent distribution, avg confidence, drift score                          |
-| `/health`          | GET    | `{status: ok, db: connected, model: loaded}`                              |
-| `/pipeline/status` | GET    | Most recent Prefect flow run status                                       |
-
-Swagger UI available at: `http://localhost:8000/docs`
-
----
-
-## Docker Deployment
-
-### Build and Run
+## Docker
 
 ```bash
 docker-compose up --build
 ```
 
-**First-time setup:**
-- Build time: ~56 minutes (downloads PyTorch, Whisper, scipy, ML libraries)
-- Whisper model download: ~55 seconds on first API startup
-- Total image size: ~7.5GB across 3 services
-
-**Subsequent runs:**
-```bash
-docker-compose up
-```
-
-### Access Services
-
-- **API Swagger UI**: http://localhost:8000/docs
-- **Dashboard**: http://localhost:8501
-- **PostgreSQL**: localhost:5432
-
-### Stop Services
-
-```bash
-docker-compose down
-```
-
-### Verified Components
-
-✅ All 4 containers start successfully  
-✅ Database connection established  
-✅ Whisper model loads automatically  
-✅ API endpoints accessible  
-✅ Dashboard renders correctly  
-✅ JSON structured logging  
-
-### Known Behavior
-
-- First API startup takes ~1 minute (Whisper model download)
-- Status "degraded" is expected until Member 3 trains the ML model
-- Build timeout on slow networks: Retry or use `--build-arg PIP_DEFAULT_TIMEOUT=300`
+Stands up four services: `postgres`, `pipeline`, `api` (port 8000), `dashboard` (port 8501). First build pulls torch + Whisper, takes ~50 min on a fresh machine; subsequent builds are cached.
 
 ---
 
-## Requirements
+## Team
 
-```
-datasets>=2.18
-huggingface_hub
-gTTS==2.5.1
-sqlalchemy>=2.0
-psycopg2-binary
-python-dotenv
-alembic
-torch
-openai-whisper
-great-expectations
-```
-
----
-
-## .gitignore
-
-Make sure your `.gitignore` contains:
-
-```
-.env
-logs/
-venv/
-ml/saved_models/
-__pycache__/
-*.pyc
-voiceintent_dump.sql
-```
-
----
-
-## Known Issues & Solutions
-
-| Issue                                           | Cause                               | Fix                                                                                |
-| ----------------------------------------------- | ----------------------------------- | ---------------------------------------------------------------------------------- |
-| `ModuleNotFoundError: No module named 'config'` | PYTHONPATH not set                  | `set PYTHONPATH=D:\path\to\voiceintent`                                            |
-| `psql not recognized`                           | PostgreSQL not in PATH              | `set PATH=%PATH%;C:\Program Files\PostgreSQL\16\bin`                               |
-| `password authentication failed`                | Wrong password in DATABASE_URL      | Check `.env` — must be `postgresql://postgres:PASSWORD@localhost:5432/voiceintent` |
-| `gTTS 429 Too Many Requests`                    | Rate limited by Google TTS API      | Switch network (hotspot), delete zero-byte files, re-run                           |
-| `Whisper FileNotFoundError WinError 2`          | ffmpeg not installed                | Install ffmpeg and add `C:\ffmpeg\bin` to PATH                                     |
-| `SHA256 checksum does not match`                | Corrupted Whisper model download    | `rmdir /s /q C:\Users\<you>\.cache\whisper` then re-run                            |
-| `Dataset scripts no longer supported`           | Legacy HuggingFace dataset format   | Use `mteb/banking77` instead of `PolyAI/banking77`                                 |
-| `clean.py found 0 transcripts`                  | `transcripts` table empty           | Run `transcribe.py` first, then `clean.py`                                         |
-| `EphemeralDataContext has no attribute sources` | GX version incompatibility          | Use `gx.get_context(mode='file', project_root_dir='gx')`                           |
-| `expect_column_values_to_be_in_set failed`      | Intent list mismatch in validate.py | Use INTENT_NAMES from `config/settings.py` as the source of truth                  |
-
----
-
-## Member Responsibilities
-
-| Member             | Scope                               | Key Files                                                                               |
-| ------------------ | ----------------------------------- | --------------------------------------------------------------------------------------- |
-| Member 1 — Hasan   | Data Ingestion & Storage Schema     | `ingestion/`, `storage/models.py`, `storage/db.py`, `config/settings.py`                |
-| Member 2 — Rohan   | Transcription & Data Quality        | `processing/transcribe.py`, `processing/clean.py`, `processing/validate.py`             |
-| Member 3 — Lina    | ML / Intent Classification          | `ml/`                                                                                   |
-| Member 4 — Ibrahim | Orchestration, Deployment & Serving | `orchestration/`, `serving/`, `logging_monitoring/`, `Dockerfile`, `docker-compose.yml` |
+| Member | Scope |
+| ------ | ----- |
+| Hasan | Ingestion + storage schema |
+| Rohan | Transcription + data quality |
+| Lina | ML / intent classification |
+| Ibrahim Noor | Orchestration, deployment, serving |
 
 ---
 
 ## AI Usage Declaration
 
 - **Tool:** Claude (Anthropic)
-- **Used for:** Project architecture planning, step-by-step implementation guidance, database schema design, debugging environment issues (PATH, PYTHONPATH, ffmpeg), and documentation.
-- **Extent:** Guidance and planning only. All code was written, tested, and debugged by team members.
+- **Used for:** Debugging environment issues.
+- **Extent:** Potential buggy code was given to claude to debug and find issues.
 
 ---
-
-_VoiceIntent · AI 620 · LUMS_

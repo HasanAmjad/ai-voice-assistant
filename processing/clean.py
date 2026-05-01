@@ -1,51 +1,44 @@
-<<<<<<< Updated upstream
-# AI620 VoiceIntent: Transcript Cleaning
+"""Authored by: Rohan."""
 
 import re
 import logging
+import sys
+import os
 
 from sqlalchemy import select
-
-import sys # Added
-import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from storage.db import get_session
 from storage.models import Transcript
 
-# Configuring the logger for this module
-
-logging.basicConfig(level = logging.INFO, format = "%(asctime)s %(levelname)s %(message)s")
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
-# Normalising a single raw transcript string into a clean lowercase string
 
 def clean_text(raw: str) -> str:
+    """Lowercase, strip, and remove punctuation; return [INAUDIBLE] for empty input."""
+    if raw is None:
+        return "[INAUDIBLE]"
 
-    text = raw.lower() # Step A: convert to lowercase
+    text = raw.lower()
+    text = text.strip()
+    text = re.sub(r"\s+", " ", text)
+    text = re.sub(r"[^a-z0-9 ']", "", text)
+    text = text.strip()
 
-    text = text.strip() # Step B: remove leading and trailing whitespace
-
-    text = re.sub(r"\s+", " ", text) # Step C: collapse all internal whitespace into a single space
-
-    text = re.sub(r"[^a-z0-9 ']", "", text) # Step D: remove everything except letters, digits, spaces, and apostrophes
-
-    text = text.strip() # Stripping again in case punctuation was at the edges
-
-    if not text: # Step E: return the inaudible marker if nothing remains
+    if not text:
         return "[INAUDIBLE]"
 
     return text
 
-# Applying clean_text to all rows where cleaned_transcript has not been filled yet
 
 def run_cleaning():
-
+    """Apply clean_text to every transcript whose cleaned_transcript is still NULL."""
     with get_session() as session:
-
-        rows_to_clean = session.execute(select(Transcript).where(Transcript.cleaned_transcript.is_(None)) # WHERE clause makes this idempotent
-                                        ).scalars().all()
+        rows_to_clean = session.execute(
+            select(Transcript).where(Transcript.cleaned_transcript.is_(None))
+        ).scalars().all()
 
         total_rows = len(rows_to_clean)
         logger.info(f"Found {total_rows} transcripts to clean")
@@ -53,38 +46,19 @@ def run_cleaning():
         cleaned_count = 0
 
         for index, transcript_row in enumerate(rows_to_clean):
-
             transcript_row.cleaned_transcript = clean_text(transcript_row.raw_transcript)
-            cleaned_count = cleaned_count + 1
+            cleaned_count += 1
 
-            if (index + 1) % 500 == 0: # Committing every 500 rows to keep transactions short
+            if (index + 1) % 500 == 0:
                 session.commit()
-                logger.info(f"Committed cleaning batch: {index + 1}/{total_rows} done so far")
+                logger.info(f"Committed cleaning batch: {index + 1}/{total_rows}")
 
-        session.commit() # Final commit for the remaining rows
-
+        session.commit()
         logger.info(f"Cleaning complete! {cleaned_count} transcripts cleaned")
+
+
+clean_all_transcripts = run_cleaning
 
 
 if __name__ == "__main__":
     run_cleaning()
-=======
-def clean_text(text):
-    """
-    Basic cleaning stub - just returns lowercase and stripped text
-    Replace with proper implementation
-    """
-    if not text:
-        return ""
-    
-    text = text.lower()
-    text = text.strip()
-    
-    return text
-
-
-def clean_all_transcripts():
-    print("⚠️  STUB: clean_all_transcripts() not implemented yet")
-    print("    Expected: Normalize all transcripts in database")
-    print("")
->>>>>>> Stashed changes

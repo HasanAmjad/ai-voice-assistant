@@ -1,6 +1,6 @@
 {
   "model_version": "model_v20260501_191559",
-  "data_hash": "c12f48c833afe00afa6266d2e7045049a5279fd4d8ec6d12d478fd287c61a947",
+  "data_hash": "053dc48d2e9aabd7b0e8ecd01b0cf76e310029eb1b00b5a2fb26d363b2756c05",
   "training_samples": 8493,
   "accuracy": 0.8791,
   "macro_f1": 0.8792,
