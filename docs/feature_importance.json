@@ -1,0 +1,3236 @@
+{
+  "activate_my_card": [
+    {
+      "token": "activate",
+      "weight": 9.2067
+    },
+    {
+      "token": "activating",
+      "weight": 7.028
+    },
+    {
+      "token": "activation",
+      "weight": 6.5704
+    },
+    {
+      "token": "activated",
+      "weight": 5.434
+    },
+    {
+      "token": "to activate",
+      "weight": 5.4229
+    },
+    {
+      "token": "card",
+      "weight": 4.7798
+    },
+    {
+      "token": "activate my",
+      "weight": 4.7317
+    },
+    {
+      "token": "activating my",
+      "weight": 4.087
+    },
+    {
+      "token": "active",
+      "weight": 3.8674
+    },
+    {
+      "token": "my new",
+      "weight": 3.4808
+    }
+  ],
+  "age_limit": [
+    {
+      "token": "age",
+      "weight": 7.6683
+    },
+    {
+      "token": "an account",
+      "weight": 6.0086
+    },
+    {
+      "token": "children",
+      "weight": 4.1631
+    },
+    {
+      "token": "old",
+      "weight": 3.6674
+    },
+    {
+      "token": "kids",
+      "weight": 3.415
+    },
+    {
+      "token": "an",
+      "weight": 3.2591
+    },
+    {
+      "token": "account",
+      "weight": 2.897
+    },
+    {
+      "token": "age limit",
+      "weight": 2.7632
+    },
+    {
+      "token": "old do",
+      "weight": 2.7527
+    },
+    {
+      "token": "my daughter",
+      "weight": 2.6987
+    }
+  ],
+  "apple_pay_or_google_pay": [
+    {
+      "token": "apple",
+      "weight": 8.3449
+    },
+    {
+      "token": "google",
+      "weight": 7.3198
+    },
+    {
+      "token": "pay",
+      "weight": 6.7438
+    },
+    {
+      "token": "google pay",
+      "weight": 4.4774
+    },
+    {
+      "token": "apple pay",
+      "weight": 3.6992
+    },
+    {
+      "token": "up",
+      "weight": 3.4854
+    },
+    {
+      "token": "watch",
+      "weight": 3.4492
+    },
+    {
+      "token": "apple watch",
+      "weight": 3.4492
+    },
+    {
+      "token": "top",
+      "weight": 3.266
+    },
+    {
+      "token": "top up",
+      "weight": 3.112
+    }
+  ],
+  "atm_support": [
+    {
+      "token": "atms",
+      "weight": 8.5843
+    },
+    {
+      "token": "atm",
+      "weight": 6.3781
+    },
+    {
+      "token": "this card",
+      "weight": 4.1534
+    },
+    {
+      "token": "withdraw",
+      "weight": 3.8446
+    },
+    {
+      "token": "withdraw money",
+      "weight": 3.8002
+    },
+    {
+      "token": "mastercard atm",
+      "weight": 2.8704
+    },
+    {
+      "token": "get money",
+      "weight": 2.7634
+    },
+    {
+      "token": "where",
+      "weight": 2.7436
+    },
+    {
+      "token": "closest",
+      "weight": 2.7087
+    },
+    {
+      "token": "the closest",
+      "weight": 2.7087
+    }
+  ],
+  "automatic_top_up": [
+    {
+      "token": "auto",
+      "weight": 8.0683
+    },
+    {
+      "token": "automatically",
+      "weight": 7.5766
+    },
+    {
+      "token": "auto top",
+      "weight": 5.217
+    },
+    {
+      "token": "option",
+      "weight": 4.398
+    },
+    {
+      "token": "top",
+      "weight": 4.033
+    },
+    {
+      "token": "traveling",
+      "weight": 3.7746
+    },
+    {
+      "token": "automatic",
+      "weight": 3.399
+    },
+    {
+      "token": "up",
+      "weight": 3.3558
+    },
+    {
+      "token": "top up",
+      "weight": 3.2941
+    },
+    {
+      "token": "autotopper",
+      "weight": 3.1282
+    }
+  ],
+  "balance_not_updated_after_bank_transfer": [
+    {
+      "token": "transfer",
+      "weight": 7.2106
+    },
+    {
+      "token": "transferred",
+      "weight": 7.2044
+    },
+    {
+      "token": "balance",
+      "weight": 6.3967
+    },
+    {
+      "token": "bank",
+      "weight": 4.5413
+    },
+    {
+      "token": "uk",
+      "weight": 4.0881
+    },
+    {
+      "token": "my balance",
+      "weight": 3.71
+    },
+    {
+      "token": "made",
+      "weight": 3.256
+    },
+    {
+      "token": "transfers",
+      "weight": 3.1895
+    },
+    {
+      "token": "bank transfer",
+      "weight": 3.0473
+    },
+    {
+      "token": "see",
+      "weight": 2.9203
+    }
+  ],
+  "balance_not_updated_after_cheque_or_cash_deposit": [
+    {
+      "token": "deposited",
+      "weight": 7.9239
+    },
+    {
+      "token": "check",
+      "weight": 7.9132
+    },
+    {
+      "token": "deposit",
+      "weight": 7.4975
+    },
+    {
+      "token": "balance",
+      "weight": 4.5615
+    },
+    {
+      "token": "cash",
+      "weight": 4.2437
+    },
+    {
+      "token": "my check",
+      "weight": 3.9567
+    },
+    {
+      "token": "cash deposit",
+      "weight": 3.4095
+    },
+    {
+      "token": "my balance",
+      "weight": 3.0156
+    },
+    {
+      "token": "week",
+      "weight": 2.8748
+    },
+    {
+      "token": "put",
+      "weight": 2.8381
+    }
+  ],
+  "beneficiary_not_allowed": [
+    {
+      "token": "beneficiary",
+      "weight": 9.9766
+    },
+    {
+      "token": "transfer",
+      "weight": 6.0143
+    },
+    {
+      "token": "why",
+      "weight": 4.2768
+    },
+    {
+      "token": "transfer to",
+      "weight": 3.9477
+    },
+    {
+      "token": "error",
+      "weight": 3.6866
+    },
+    {
+      "token": "message",
+      "weight": 3.5002
+    },
+    {
+      "token": "not",
+      "weight": 3.4531
+    },
+    {
+      "token": "my beneficiary",
+      "weight": 3.4148
+    },
+    {
+      "token": "to beneficiary",
+      "weight": 3.3624
+    },
+    {
+      "token": "error message",
+      "weight": 3.1148
+    }
+  ],
+  "cancel_transfer": [
+    {
+      "token": "transaction",
+      "weight": 8.1948
+    },
+    {
+      "token": "cancel",
+      "weight": 7.3461
+    },
+    {
+      "token": "transfer",
+      "weight": 5.8983
+    },
+    {
+      "token": "wrong account",
+      "weight": 5.118
+    },
+    {
+      "token": "made",
+      "weight": 4.2774
+    },
+    {
+      "token": "wrong",
+      "weight": 3.6722
+    },
+    {
+      "token": "to cancel",
+      "weight": 3.6123
+    },
+    {
+      "token": "stop",
+      "weight": 3.3428
+    },
+    {
+      "token": "the wrong",
+      "weight": 3.24
+    },
+    {
+      "token": "mistake",
+      "weight": 3.2052
+    }
+  ],
+  "card_about_to_expire": [
+    {
+      "token": "expires",
+      "weight": 6.9266
+    },
+    {
+      "token": "china",
+      "weight": 5.7439
+    },
+    {
+      "token": "expire",
+      "weight": 4.9286
+    },
+    {
+      "token": "expired",
+      "weight": 4.6492
+    },
+    {
+      "token": "new",
+      "weight": 4.5254
+    },
+    {
+      "token": "card",
+      "weight": 4.2443
+    },
+    {
+      "token": "card expires",
+      "weight": 4.0828
+    },
+    {
+      "token": "to expire",
+      "weight": 3.8686
+    },
+    {
+      "token": "expiration",
+      "weight": 3.7174
+    },
+    {
+      "token": "in china",
+      "weight": 3.5347
+    }
+  ],
+  "card_acceptance": [
+    {
+      "token": "card",
+      "weight": 4.8178
+    },
+    {
+      "token": "this card",
+      "weight": 4.7811
+    },
+    {
+      "token": "businesses",
+      "weight": 3.9751
+    },
+    {
+      "token": "where",
+      "weight": 3.9676
+    },
+    {
+      "token": "my card",
+      "weight": 3.8708
+    },
+    {
+      "token": "accept",
+      "weight": 3.622
+    },
+    {
+      "token": "use my",
+      "weight": 3.3855
+    },
+    {
+      "token": "can use",
+      "weight": 3.2623
+    },
+    {
+      "token": "accept my",
+      "weight": 3.1557
+    },
+    {
+      "token": "anywhere",
+      "weight": 2.7941
+    }
+  ],
+  "card_arrival": [
+    {
+      "token": "my new",
+      "weight": 5.759
+    },
+    {
+      "token": "card",
+      "weight": 5.5115
+    },
+    {
+      "token": "track",
+      "weight": 5.2416
+    },
+    {
+      "token": "delivery",
+      "weight": 4.1948
+    },
+    {
+      "token": "my card",
+      "weight": 4.1293
+    },
+    {
+      "token": "tracking",
+      "weight": 4.0745
+    },
+    {
+      "token": "the card",
+      "weight": 3.6688
+    },
+    {
+      "token": "sent",
+      "weight": 3.3794
+    },
+    {
+      "token": "new",
+      "weight": 3.2877
+    },
+    {
+      "token": "new card",
+      "weight": 3.2337
+    }
+  ],
+  "card_blocked": [
+    {
+      "token": "delivery",
+      "weight": 5.656
+    },
+    {
+      "token": "delivered",
+      "weight": 5.4201
+    },
+    {
+      "token": "my card",
+      "weight": 4.6209
+    },
+    {
+      "token": "when",
+      "weight": 3.7056
+    },
+    {
+      "token": "us",
+      "weight": 3.3644
+    },
+    {
+      "token": "card to",
+      "weight": 3.2717
+    },
+    {
+      "token": "it delivered",
+      "weight": 3.2669
+    },
+    {
+      "token": "card",
+      "weight": 3.0926
+    },
+    {
+      "token": "how long",
+      "weight": 2.9196
+    },
+    {
+      "token": "need",
+      "weight": 2.8367
+    }
+  ],
+  "card_delivery_estimate": [
+    {
+      "token": "link",
+      "weight": 7.9117
+    },
+    {
+      "token": "card",
+      "weight": 5.9068
+    },
+    {
+      "token": "reactivate",
+      "weight": 5.2862
+    },
+    {
+      "token": "the app",
+      "weight": 5.1583
+    },
+    {
+      "token": "app",
+      "weight": 5.0919
+    },
+    {
+      "token": "found",
+      "weight": 4.3914
+    },
+    {
+      "token": "it",
+      "weight": 3.6512
+    },
+    {
+      "token": "to link",
+      "weight": 3.5745
+    },
+    {
+      "token": "lost",
+      "weight": 3.442
+    },
+    {
+      "token": "new card",
+      "weight": 3.0371
+    }
+  ],
+  "card_linking": [
+    {
+      "token": "my card",
+      "weight": 5.757
+    },
+    {
+      "token": "work",
+      "weight": 5.3963
+    },
+    {
+      "token": "card",
+      "weight": 5.3795
+    },
+    {
+      "token": "working",
+      "weight": 5.0257
+    },
+    {
+      "token": "broken",
+      "weight": 3.6254
+    },
+    {
+      "token": "anymore",
+      "weight": 2.9653
+    },
+    {
+      "token": "transactions",
+      "weight": 2.9149
+    },
+    {
+      "token": "today",
+      "weight": 2.828
+    },
+    {
+      "token": "any transactions",
+      "weight": 2.731
+    },
+    {
+      "token": "broke",
+      "weight": 2.725
+    }
+  ],
+  "card_not_working": [
+    {
+      "token": "fee",
+      "weight": 9.3256
+    },
+    {
+      "token": "charged",
+      "weight": 6.3249
+    },
+    {
+      "token": "fees",
+      "weight": 6.0555
+    },
+    {
+      "token": "when",
+      "weight": 3.682
+    },
+    {
+      "token": "card",
+      "weight": 3.6462
+    },
+    {
+      "token": "payments",
+      "weight": 3.5792
+    },
+    {
+      "token": "for using",
+      "weight": 3.3485
+    },
+    {
+      "token": "using my",
+      "weight": 3.0282
+    },
+    {
+      "token": "extra",
+      "weight": 2.984
+    },
+    {
+      "token": "my card",
+      "weight": 2.9208
+    }
+  ],
+  "card_payment_fee_charged": [
+    {
+      "token": "payment",
+      "weight": 9.2191
+    },
+    {
+      "token": "charge",
+      "weight": 4.3246
+    },
+    {
+      "token": "recognize",
+      "weight": 4.075
+    },
+    {
+      "token": "payment in",
+      "weight": 3.833
+    },
+    {
+      "token": "didn",
+      "weight": 3.8206
+    },
+    {
+      "token": "didn make",
+      "weight": 3.6999
+    },
+    {
+      "token": "that",
+      "weight": 3.3548
+    },
+    {
+      "token": "there",
+      "weight": 3.2745
+    },
+    {
+      "token": "make",
+      "weight": 3.2464
+    },
+    {
+      "token": "don recognize",
+      "weight": 3.1801
+    }
+  ],
+  "card_payment_not_recognised": [
+    {
+      "token": "rate",
+      "weight": 7.7571
+    },
+    {
+      "token": "exchange",
+      "weight": 6.5797
+    },
+    {
+      "token": "exchange rate",
+      "weight": 4.7666
+    },
+    {
+      "token": "purchase",
+      "weight": 3.6786
+    },
+    {
+      "token": "wrong",
+      "weight": 3.4578
+    },
+    {
+      "token": "bought",
+      "weight": 3.2222
+    },
+    {
+      "token": "item",
+      "weight": 3.0225
+    },
+    {
+      "token": "currency",
+      "weight": 2.8972
+    },
+    {
+      "token": "the exchange",
+      "weight": 2.8534
+    },
+    {
+      "token": "russian",
+      "weight": 2.7813
+    }
+  ],
+  "card_payment_wrong_exchange_rate": [
+    {
+      "token": "atm",
+      "weight": 7.4224
+    },
+    {
+      "token": "the atm",
+      "weight": 6.1095
+    },
+    {
+      "token": "my card",
+      "weight": 5.6686
+    },
+    {
+      "token": "card",
+      "weight": 4.912
+    },
+    {
+      "token": "card back",
+      "weight": 3.7139
+    },
+    {
+      "token": "machine",
+      "weight": 3.6694
+    },
+    {
+      "token": "swallowed",
+      "weight": 3.5289
+    },
+    {
+      "token": "back",
+      "weight": 3.0687
+    },
+    {
+      "token": "my",
+      "weight": 2.5626
+    },
+    {
+      "token": "the",
+      "weight": 2.4724
+    }
+  ],
+  "card_swallowed": [
+    {
+      "token": "fee",
+      "weight": 6.6785
+    },
+    {
+      "token": "withdrawal",
+      "weight": 6.2121
+    },
+    {
+      "token": "cash",
+      "weight": 5.8998
+    },
+    {
+      "token": "atm",
+      "weight": 5.6831
+    },
+    {
+      "token": "charged",
+      "weight": 5.5259
+    },
+    {
+      "token": "withdrawals",
+      "weight": 3.8575
+    },
+    {
+      "token": "withdrawing",
+      "weight": 3.7175
+    },
+    {
+      "token": "charge",
+      "weight": 3.5673
+    },
+    {
+      "token": "fees",
+      "weight": 3.2231
+    },
+    {
+      "token": "for withdrawing",
+      "weight": 3.0606
+    }
+  ],
+  "cash_withdrawal_charge": [
+    {
+      "token": "withdrawal",
+      "weight": 8.4166
+    },
+    {
+      "token": "cash",
+      "weight": 4.7037
+    },
+    {
+      "token": "didn",
+      "weight": 4.1702
+    },
+    {
+      "token": "cache",
+      "weight": 3.9443
+    },
+    {
+      "token": "app",
+      "weight": 3.899
+    },
+    {
+      "token": "someone",
+      "weight": 3.8126
+    },
+    {
+      "token": "cache withdrawal",
+      "weight": 3.3897
+    },
+    {
+      "token": "my app",
+      "weight": 3.1648
+    },
+    {
+      "token": "withdrawal on",
+      "weight": 2.8997
+    },
+    {
+      "token": "that",
+      "weight": 2.8796
+    }
+  ],
+  "cash_withdrawal_not_recognised": [
+    {
+      "token": "pin",
+      "weight": 10.3772
+    },
+    {
+      "token": "my pin",
+      "weight": 6.2222
+    },
+    {
+      "token": "change",
+      "weight": 6.1453
+    },
+    {
+      "token": "change my",
+      "weight": 5.5388
+    },
+    {
+      "token": "new pin",
+      "weight": 3.6643
+    },
+    {
+      "token": "to change",
+      "weight": 3.1622
+    },
+    {
+      "token": "can change",
+      "weight": 2.4581
+    },
+    {
+      "token": "can",
+      "weight": 2.3563
+    },
+    {
+      "token": "new",
+      "weight": 1.7183
+    },
+    {
+      "token": "up new",
+      "weight": 1.7003
+    }
+  ],
+  "change_pin": [
+    {
+      "token": "someone",
+      "weight": 5.5332
+    },
+    {
+      "token": "transactions",
+      "weight": 3.9679
+    },
+    {
+      "token": "my card",
+      "weight": 3.6189
+    },
+    {
+      "token": "think",
+      "weight": 3.4536
+    },
+    {
+      "token": "used",
+      "weight": 3.1903
+    },
+    {
+      "token": "card",
+      "weight": 2.9376
+    },
+    {
+      "token": "stolen",
+      "weight": 2.7636
+    },
+    {
+      "token": "fraudulent",
+      "weight": 2.6362
+    },
+    {
+      "token": "there are",
+      "weight": 2.4955
+    },
+    {
+      "token": "fraud",
+      "weight": 2.4317
+    }
+  ],
+  "compromised_card": [
+    {
+      "token": "contactless",
+      "weight": 9.1696
+    },
+    {
+      "token": "my contactless",
+      "weight": 4.8393
+    },
+    {
+      "token": "new card",
+      "weight": 2.8525
+    },
+    {
+      "token": "contactless payments",
+      "weight": 2.8327
+    },
+    {
+      "token": "new",
+      "weight": 2.4187
+    },
+    {
+      "token": "contact list",
+      "weight": 2.1216
+    },
+    {
+      "token": "apps",
+      "weight": 2.033
+    },
+    {
+      "token": "any charges",
+      "weight": 1.8245
+    },
+    {
+      "token": "work",
+      "weight": 1.8234
+    },
+    {
+      "token": "for new",
+      "weight": 1.7964
+    }
+  ],
+  "contactless_not_working": [
+    {
+      "token": "countries",
+      "weight": 7.7029
+    },
+    {
+      "token": "in",
+      "weight": 5.3051
+    },
+    {
+      "token": "get card",
+      "weight": 4.2976
+    },
+    {
+      "token": "in the",
+      "weight": 4.0894
+    },
+    {
+      "token": "support",
+      "weight": 4.0214
+    },
+    {
+      "token": "eu",
+      "weight": 3.3296
+    },
+    {
+      "token": "the uk",
+      "weight": 3.2004
+    },
+    {
+      "token": "what countries",
+      "weight": 3.1725
+    },
+    {
+      "token": "us",
+      "weight": 2.9512
+    },
+    {
+      "token": "the eu",
+      "weight": 2.867
+    }
+  ],
+  "country_support": [
+    {
+      "token": "declined",
+      "weight": 8.2868
+    },
+    {
+      "token": "payment",
+      "weight": 6.893
+    },
+    {
+      "token": "card payment",
+      "weight": 4.6661
+    },
+    {
+      "token": "my card",
+      "weight": 4.6591
+    },
+    {
+      "token": "decline",
+      "weight": 4.2274
+    },
+    {
+      "token": "my payment",
+      "weight": 3.665
+    },
+    {
+      "token": "card",
+      "weight": 3.6356
+    },
+    {
+      "token": "store",
+      "weight": 3.6307
+    },
+    {
+      "token": "shop",
+      "weight": 3.605
+    },
+    {
+      "token": "why",
+      "weight": 3.5026
+    }
+  ],
+  "declined_card_payment": [
+    {
+      "token": "declined",
+      "weight": 9.8507
+    },
+    {
+      "token": "transfer",
+      "weight": 7.272
+    },
+    {
+      "token": "my transfer",
+      "weight": 4.5779
+    },
+    {
+      "token": "decline",
+      "weight": 4.5697
+    },
+    {
+      "token": "message",
+      "weight": 3.911
+    },
+    {
+      "token": "getting declined",
+      "weight": 3.5477
+    },
+    {
+      "token": "transfer was",
+      "weight": 3.2914
+    },
+    {
+      "token": "my transfers",
+      "weight": 3.2172
+    },
+    {
+      "token": "decline message",
+      "weight": 2.8671
+    },
+    {
+      "token": "transfers",
+      "weight": 2.7608
+    }
+  ],
+  "declined_cash_withdrawal": [
+    {
+      "token": "atm",
+      "weight": 8.6563
+    },
+    {
+      "token": "cash",
+      "weight": 6.3487
+    },
+    {
+      "token": "declined",
+      "weight": 5.3795
+    },
+    {
+      "token": "the atm",
+      "weight": 5.0898
+    },
+    {
+      "token": "withdraw",
+      "weight": 4.2056
+    },
+    {
+      "token": "why",
+      "weight": 3.3769
+    },
+    {
+      "token": "withdrawal",
+      "weight": 3.1411
+    },
+    {
+      "token": "was",
+      "weight": 3.0099
+    },
+    {
+      "token": "tried",
+      "weight": 2.9143
+    },
+    {
+      "token": "get cash",
+      "weight": 2.9018
+    }
+  ],
+  "declined_transfer": [
+    {
+      "token": "debit",
+      "weight": 9.7051
+    },
+    {
+      "token": "direct",
+      "weight": 6.7545
+    },
+    {
+      "token": "direct debit",
+      "weight": 5.0424
+    },
+    {
+      "token": "dispute",
+      "weight": 4.3986
+    },
+    {
+      "token": "debit payment",
+      "weight": 3.2189
+    },
+    {
+      "token": "payment",
+      "weight": 3.0015
+    },
+    {
+      "token": "that",
+      "weight": 2.8898
+    },
+    {
+      "token": "this charge",
+      "weight": 2.8465
+    },
+    {
+      "token": "didn",
+      "weight": 2.7209
+    },
+    {
+      "token": "my debit",
+      "weight": 2.5569
+    }
+  ],
+  "direct_debit_payment_not_recognised": [
+    {
+      "token": "disposable",
+      "weight": 8.7271
+    },
+    {
+      "token": "cards",
+      "weight": 5.369
+    },
+    {
+      "token": "disposable cards",
+      "weight": 4.9776
+    },
+    {
+      "token": "disposable card",
+      "weight": 4.3524
+    },
+    {
+      "token": "virtual",
+      "weight": 3.4281
+    },
+    {
+      "token": "limits",
+      "weight": 3.248
+    },
+    {
+      "token": "restrictions",
+      "weight": 2.9271
+    },
+    {
+      "token": "how many",
+      "weight": 2.7938
+    },
+    {
+      "token": "virtual card",
+      "weight": 2.7884
+    },
+    {
+      "token": "day",
+      "weight": 2.6115
+    }
+  ],
+  "dispute_purchase": [
+    {
+      "token": "details",
+      "weight": 7.3302
+    },
+    {
+      "token": "address",
+      "weight": 5.5774
+    },
+    {
+      "token": "change",
+      "weight": 4.8061
+    },
+    {
+      "token": "name",
+      "weight": 4.6461
+    },
+    {
+      "token": "change my",
+      "weight": 3.7852
+    },
+    {
+      "token": "my details",
+      "weight": 3.4523
+    },
+    {
+      "token": "personal",
+      "weight": 3.3781
+    },
+    {
+      "token": "edit",
+      "weight": 3.2436
+    },
+    {
+      "token": "my address",
+      "weight": 3.2416
+    },
+    {
+      "token": "to change",
+      "weight": 3.2326
+    }
+  ],
+  "edit_personal_details": [
+    {
+      "token": "exchange",
+      "weight": 7.7292
+    },
+    {
+      "token": "currency",
+      "weight": 5.4646
+    },
+    {
+      "token": "exchanges",
+      "weight": 5.0318
+    },
+    {
+      "token": "exchange fee",
+      "weight": 4.7941
+    },
+    {
+      "token": "currencies",
+      "weight": 4.4955
+    },
+    {
+      "token": "discount",
+      "weight": 4.3034
+    },
+    {
+      "token": "exchanging",
+      "weight": 3.9321
+    },
+    {
+      "token": "foreign",
+      "weight": 3.8728
+    },
+    {
+      "token": "fee",
+      "weight": 3.8614
+    },
+    {
+      "token": "for exchanging",
+      "weight": 3.1725
+    }
+  ],
+  "exchange_charge": [
+    {
+      "token": "exchange",
+      "weight": 7.9631
+    },
+    {
+      "token": "exchange rate",
+      "weight": 6.1911
+    },
+    {
+      "token": "rate",
+      "weight": 6.0695
+    },
+    {
+      "token": "rates",
+      "weight": 4.9373
+    },
+    {
+      "token": "exchange rates",
+      "weight": 4.4662
+    },
+    {
+      "token": "your exchange",
+      "weight": 3.6754
+    },
+    {
+      "token": "the exchange",
+      "weight": 3.1768
+    },
+    {
+      "token": "value",
+      "weight": 3.0533
+    },
+    {
+      "token": "exchanges",
+      "weight": 2.8889
+    },
+    {
+      "token": "what",
+      "weight": 2.7939
+    }
+  ],
+  "exchange_rate": [
+    {
+      "token": "currency",
+      "weight": 6.3724
+    },
+    {
+      "token": "gbp",
+      "weight": 5.7469
+    },
+    {
+      "token": "currencies",
+      "weight": 5.3856
+    },
+    {
+      "token": "exchange",
+      "weight": 4.883
+    },
+    {
+      "token": "to exchange",
+      "weight": 4.5826
+    },
+    {
+      "token": "ud",
+      "weight": 4.5164
+    },
+    {
+      "token": "app",
+      "weight": 4.0304
+    },
+    {
+      "token": "change",
+      "weight": 3.5442
+    },
+    {
+      "token": "usd",
+      "weight": 3.4538
+    },
+    {
+      "token": "this app",
+      "weight": 3.4487
+    }
+  ],
+  "exchange_via_app": [
+    {
+      "token": "pound",
+      "weight": 6.2095
+    },
+    {
+      "token": "statement",
+      "weight": 5.5688
+    },
+    {
+      "token": "charge",
+      "weight": 5.0508
+    },
+    {
+      "token": "extra",
+      "weight": 4.8449
+    },
+    {
+      "token": "charged",
+      "weight": 4.6705
+    },
+    {
+      "token": "my statement",
+      "weight": 4.3452
+    },
+    {
+      "token": "was charged",
+      "weight": 3.6365
+    },
+    {
+      "token": "on my",
+      "weight": 3.4622
+    },
+    {
+      "token": "transaction",
+      "weight": 3.1554
+    },
+    {
+      "token": "fee",
+      "weight": 3.1414
+    }
+  ],
+  "extra_charge_on_statement": [
+    {
+      "token": "transfer",
+      "weight": 9.2197
+    },
+    {
+      "token": "failed",
+      "weight": 4.8398
+    },
+    {
+      "token": "my transfer",
+      "weight": 4.5206
+    },
+    {
+      "token": "why",
+      "weight": 4.2554
+    },
+    {
+      "token": "tried",
+      "weight": 3.1786
+    },
+    {
+      "token": "fail",
+      "weight": 2.7985
+    },
+    {
+      "token": "complete",
+      "weight": 2.736
+    },
+    {
+      "token": "mortgage",
+      "weight": 2.696
+    },
+    {
+      "token": "system",
+      "weight": 2.6522
+    },
+    {
+      "token": "through",
+      "weight": 2.6104
+    }
+  ],
+  "failed_transfer": [
+    {
+      "token": "currencies",
+      "weight": 8.1676
+    },
+    {
+      "token": "hold",
+      "weight": 4.985
+    },
+    {
+      "token": "eur",
+      "weight": 4.3362
+    },
+    {
+      "token": "exchanges",
+      "weight": 3.8682
+    },
+    {
+      "token": "holding",
+      "weight": 3.728
+    },
+    {
+      "token": "fear",
+      "weight": 3.4905
+    },
+    {
+      "token": "currency",
+      "weight": 3.2568
+    },
+    {
+      "token": "multiple currencies",
+      "weight": 3.1346
+    },
+    {
+      "token": "fiat",
+      "weight": 3.01
+    },
+    {
+      "token": "can exchange",
+      "weight": 2.8689
+    }
+  ],
+  "fiat_currency_support": [
+    {
+      "token": "disposable",
+      "weight": 10.0881
+    },
+    {
+      "token": "virtual",
+      "weight": 5.3898
+    },
+    {
+      "token": "virtual card",
+      "weight": 4.7961
+    },
+    {
+      "token": "disposable virtual",
+      "weight": 4.6954
+    },
+    {
+      "token": "disposable cards",
+      "weight": 3.8774
+    },
+    {
+      "token": "cards",
+      "weight": 3.6578
+    },
+    {
+      "token": "disposable card",
+      "weight": 3.292
+    },
+    {
+      "token": "the disposable",
+      "weight": 2.3253
+    },
+    {
+      "token": "cards work",
+      "weight": 2.264
+    },
+    {
+      "token": "card",
+      "weight": 2.2494
+    }
+  ],
+  "freeze_account": [
+    {
+      "token": "pin",
+      "weight": 12.334
+    },
+    {
+      "token": "my pin",
+      "weight": 5.4989
+    },
+    {
+      "token": "card pin",
+      "weight": 4.1868
+    },
+    {
+      "token": "the pin",
+      "weight": 4.0999
+    },
+    {
+      "token": "pen",
+      "weight": 3.6446
+    },
+    {
+      "token": "the card",
+      "weight": 3.0403
+    },
+    {
+      "token": "my pen",
+      "weight": 2.5507
+    },
+    {
+      "token": "find my",
+      "weight": 2.3532
+    },
+    {
+      "token": "find",
+      "weight": 2.297
+    },
+    {
+      "token": "get",
+      "weight": 2.0724
+    }
+  ],
+  "get_disposable_virtual_card": [
+    {
+      "token": "cards",
+      "weight": 7.7183
+    },
+    {
+      "token": "another card",
+      "weight": 5.8861
+    },
+    {
+      "token": "second card",
+      "weight": 5.1059
+    },
+    {
+      "token": "card",
+      "weight": 4.6411
+    },
+    {
+      "token": "another",
+      "weight": 4.6318
+    },
+    {
+      "token": "second",
+      "weight": 4.6298
+    },
+    {
+      "token": "more",
+      "weight": 4.6105
+    },
+    {
+      "token": "more cards",
+      "weight": 3.9367
+    },
+    {
+      "token": "additional",
+      "weight": 3.5437
+    },
+    {
+      "token": "spare",
+      "weight": 3.3502
+    }
+  ],
+  "get_physical_card": [
+    {
+      "token": "virtual",
+      "weight": 10.6026
+    },
+    {
+      "token": "virtual card",
+      "weight": 7.5263
+    },
+    {
+      "token": "virtual cards",
+      "weight": 4.1435
+    },
+    {
+      "token": "cards",
+      "weight": 2.4013
+    },
+    {
+      "token": "card",
+      "weight": 2.3853
+    },
+    {
+      "token": "the virtual",
+      "weight": 2.3246
+    },
+    {
+      "token": "get one",
+      "weight": 2.1021
+    },
+    {
+      "token": "order",
+      "weight": 1.9874
+    },
+    {
+      "token": "where",
+      "weight": 1.9516
+    },
+    {
+      "token": "one",
+      "weight": 1.93
+    }
+  ],
+  "getting_spare_card": [
+    {
+      "token": "stolen",
+      "weight": 7.4567
+    },
+    {
+      "token": "lost",
+      "weight": 5.2887
+    },
+    {
+      "token": "card",
+      "weight": 4.7633
+    },
+    {
+      "token": "my card",
+      "weight": 4.723
+    },
+    {
+      "token": "lost my",
+      "weight": 3.02
+    },
+    {
+      "token": "card is",
+      "weight": 2.7734
+    },
+    {
+      "token": "was stolen",
+      "weight": 2.593
+    },
+    {
+      "token": "find my",
+      "weight": 2.5154
+    },
+    {
+      "token": "missing",
+      "weight": 2.3532
+    },
+    {
+      "token": "card what",
+      "weight": 2.3102
+    }
+  ],
+  "getting_virtual_card": [
+    {
+      "token": "phone",
+      "weight": 9.0491
+    },
+    {
+      "token": "my phone",
+      "weight": 7.9189
+    },
+    {
+      "token": "stolen",
+      "weight": 3.9332
+    },
+    {
+      "token": "access",
+      "weight": 3.4781
+    },
+    {
+      "token": "mugged",
+      "weight": 3.227
+    },
+    {
+      "token": "lost",
+      "weight": 2.9217
+    },
+    {
+      "token": "phone is",
+      "weight": 2.6969
+    },
+    {
+      "token": "app",
+      "weight": 2.643
+    },
+    {
+      "token": "yesterday",
+      "weight": 2.4521
+    },
+    {
+      "token": "the app",
+      "weight": 2.3079
+    }
+  ],
+  "lost_or_stolen_card": [
+    {
+      "token": "card",
+      "weight": 7.6507
+    },
+    {
+      "token": "physical",
+      "weight": 5.6318
+    },
+    {
+      "token": "physical card",
+      "weight": 4.8687
+    },
+    {
+      "token": "cards",
+      "weight": 4.5662
+    },
+    {
+      "token": "order",
+      "weight": 4.3732
+    },
+    {
+      "token": "order my",
+      "weight": 3.5774
+    },
+    {
+      "token": "where",
+      "weight": 3.3898
+    },
+    {
+      "token": "delivered",
+      "weight": 3.0428
+    },
+    {
+      "token": "get",
+      "weight": 3.0409
+    },
+    {
+      "token": "order card",
+      "weight": 2.8955
+    }
+  ],
+  "lost_or_stolen_phone": [
+    {
+      "token": "passcode",
+      "weight": 9.6926
+    },
+    {
+      "token": "password",
+      "weight": 6.3533
+    },
+    {
+      "token": "my passcode",
+      "weight": 6.0857
+    },
+    {
+      "token": "code",
+      "weight": 5.7261
+    },
+    {
+      "token": "my password",
+      "weight": 5.4518
+    },
+    {
+      "token": "reset",
+      "weight": 2.9842
+    },
+    {
+      "token": "the passcode",
+      "weight": 2.9094
+    },
+    {
+      "token": "my code",
+      "weight": 2.7283
+    },
+    {
+      "token": "forgot",
+      "weight": 2.6989
+    },
+    {
+      "token": "access my",
+      "weight": 2.1173
+    }
+  ],
+  "order_physical_card": [
+    {
+      "token": "pending",
+      "weight": 10.5294
+    },
+    {
+      "token": "payment",
+      "weight": 9.9436
+    },
+    {
+      "token": "still",
+      "weight": 3.3302
+    },
+    {
+      "token": "through",
+      "weight": 3.2722
+    },
+    {
+      "token": "as pending",
+      "weight": 3.0932
+    },
+    {
+      "token": "payment to",
+      "weight": 2.8982
+    },
+    {
+      "token": "my payment",
+      "weight": 2.6412
+    },
+    {
+      "token": "pending payment",
+      "weight": 2.6024
+    },
+    {
+      "token": "yet",
+      "weight": 2.4278
+    },
+    {
+      "token": "payments",
+      "weight": 2.4103
+    }
+  ],
+  "passcode_forgotten": [
+    {
+      "token": "pending",
+      "weight": 8.1895
+    },
+    {
+      "token": "withdrawal",
+      "weight": 6.9262
+    },
+    {
+      "token": "cash",
+      "weight": 6.712
+    },
+    {
+      "token": "atm",
+      "weight": 5.0917
+    },
+    {
+      "token": "still",
+      "weight": 4.5492
+    },
+    {
+      "token": "cash withdrawal",
+      "weight": 3.5736
+    },
+    {
+      "token": "the atm",
+      "weight": 2.8273
+    },
+    {
+      "token": "show",
+      "weight": 2.8104
+    },
+    {
+      "token": "cash with",
+      "weight": 2.7318
+    },
+    {
+      "token": "earlier",
+      "weight": 2.7264
+    }
+  ],
+  "pending_card_payment": [
+    {
+      "token": "pending",
+      "weight": 6.1393
+    },
+    {
+      "token": "topup",
+      "weight": 5.1052
+    },
+    {
+      "token": "up",
+      "weight": 5.0317
+    },
+    {
+      "token": "my top",
+      "weight": 5.0115
+    },
+    {
+      "token": "top up",
+      "weight": 4.6556
+    },
+    {
+      "token": "top",
+      "weight": 4.4445
+    },
+    {
+      "token": "through",
+      "weight": 4.0107
+    },
+    {
+      "token": "an hour",
+      "weight": 3.2933
+    },
+    {
+      "token": "hour",
+      "weight": 3.223
+    },
+    {
+      "token": "topped up",
+      "weight": 2.9857
+    }
+  ],
+  "pending_cash_withdrawal": [
+    {
+      "token": "pending",
+      "weight": 9.6131
+    },
+    {
+      "token": "transfer",
+      "weight": 8.0521
+    },
+    {
+      "token": "money transfer",
+      "weight": 3.687
+    },
+    {
+      "token": "my transfer",
+      "weight": 3.0185
+    },
+    {
+      "token": "yet",
+      "weight": 2.9195
+    },
+    {
+      "token": "transfers",
+      "weight": 2.7133
+    },
+    {
+      "token": "how long",
+      "weight": 2.6375
+    },
+    {
+      "token": "long",
+      "weight": 2.6308
+    },
+    {
+      "token": "is transfer",
+      "weight": 2.6302
+    },
+    {
+      "token": "still",
+      "weight": 2.613
+    }
+  ],
+  "pending_top_up": [
+    {
+      "token": "pin",
+      "weight": 8.5182
+    },
+    {
+      "token": "my pin",
+      "weight": 6.3226
+    },
+    {
+      "token": "blocked",
+      "weight": 6.1633
+    },
+    {
+      "token": "unblock",
+      "weight": 4.5811
+    },
+    {
+      "token": "unblocked",
+      "weight": 3.796
+    },
+    {
+      "token": "unblock my",
+      "weight": 3.7858
+    },
+    {
+      "token": "my pen",
+      "weight": 3.2835
+    },
+    {
+      "token": "pen",
+      "weight": 3.2804
+    },
+    {
+      "token": "unlocked",
+      "weight": 3.1257
+    },
+    {
+      "token": "block",
+      "weight": 2.6049
+    }
+  ],
+  "pending_transfer": [
+    {
+      "token": "salary",
+      "weight": 6.3519
+    },
+    {
+      "token": "my salary",
+      "weight": 5.5824
+    },
+    {
+      "token": "me money",
+      "weight": 4.2555
+    },
+    {
+      "token": "friend",
+      "weight": 3.8626
+    },
+    {
+      "token": "gbp",
+      "weight": 3.8103
+    },
+    {
+      "token": "send",
+      "weight": 3.4516
+    },
+    {
+      "token": "receive",
+      "weight": 3.4223
+    },
+    {
+      "token": "in gbp",
+      "weight": 3.2548
+    },
+    {
+      "token": "send me",
+      "weight": 3.165
+    },
+    {
+      "token": "can my",
+      "weight": 3.1372
+    }
+  ],
+  "pin_blocked": [
+    {
+      "token": "refund",
+      "weight": 14.4207
+    },
+    {
+      "token": "my refund",
+      "weight": 6.2551
+    },
+    {
+      "token": "my statement",
+      "weight": 3.3117
+    },
+    {
+      "token": "statement",
+      "weight": 3.237
+    },
+    {
+      "token": "requested",
+      "weight": 2.9953
+    },
+    {
+      "token": "refund but",
+      "weight": 2.7852
+    },
+    {
+      "token": "merchant",
+      "weight": 2.6387
+    },
+    {
+      "token": "see",
+      "weight": 2.5106
+    },
+    {
+      "token": "seller",
+      "weight": 2.4956
+    },
+    {
+      "token": "in my",
+      "weight": 2.3522
+    }
+  ],
+  "receiving_money": [
+    {
+      "token": "refund",
+      "weight": 10.7576
+    },
+    {
+      "token": "purchase",
+      "weight": 5.7146
+    },
+    {
+      "token": "item",
+      "weight": 5.4731
+    },
+    {
+      "token": "product",
+      "weight": 3.9895
+    },
+    {
+      "token": "refunded",
+      "weight": 3.9705
+    },
+    {
+      "token": "cancel",
+      "weight": 3.9565
+    },
+    {
+      "token": "my order",
+      "weight": 3.6982
+    },
+    {
+      "token": "return",
+      "weight": 3.3846
+    },
+    {
+      "token": "bought",
+      "weight": 3.3046
+    },
+    {
+      "token": "get refund",
+      "weight": 3.2244
+    }
+  ],
+  "refund_not_showing_up": [
+    {
+      "token": "payment",
+      "weight": 9.5198
+    },
+    {
+      "token": "reverted",
+      "weight": 6.8499
+    },
+    {
+      "token": "cancelled",
+      "weight": 5.2353
+    },
+    {
+      "token": "card payment",
+      "weight": 5.0425
+    },
+    {
+      "token": "back",
+      "weight": 4.6416
+    },
+    {
+      "token": "my payment",
+      "weight": 4.1615
+    },
+    {
+      "token": "already",
+      "weight": 3.3688
+    },
+    {
+      "token": "two weeks",
+      "weight": 2.9293
+    },
+    {
+      "token": "weeks",
+      "weight": 2.6747
+    },
+    {
+      "token": "two",
+      "weight": 2.6251
+    }
+  ],
+  "request_refund": [
+    {
+      "token": "cards",
+      "weight": 4.0984
+    },
+    {
+      "token": "american express",
+      "weight": 3.8777
+    },
+    {
+      "token": "american",
+      "weight": 3.7975
+    },
+    {
+      "token": "currencies",
+      "weight": 3.7588
+    },
+    {
+      "token": "add money",
+      "weight": 3.7526
+    },
+    {
+      "token": "express",
+      "weight": 3.6869
+    },
+    {
+      "token": "support",
+      "weight": 3.4728
+    },
+    {
+      "token": "add",
+      "weight": 3.4632
+    },
+    {
+      "token": "credit",
+      "weight": 3.451
+    },
+    {
+      "token": "accepted",
+      "weight": 3.1611
+    }
+  ],
+  "reverted_card_payment": [
+    {
+      "token": "account",
+      "weight": 8.421
+    },
+    {
+      "token": "delete",
+      "weight": 6.5425
+    },
+    {
+      "token": "my account",
+      "weight": 5.6609
+    },
+    {
+      "token": "close",
+      "weight": 4.1957
+    },
+    {
+      "token": "close my",
+      "weight": 3.2095
+    },
+    {
+      "token": "to delete",
+      "weight": 2.8733
+    },
+    {
+      "token": "delete my",
+      "weight": 2.832
+    },
+    {
+      "token": "want",
+      "weight": 2.727
+    },
+    {
+      "token": "this account",
+      "weight": 2.6725
+    },
+    {
+      "token": "terminate",
+      "weight": 2.3845
+    }
+  ],
+  "savings_account": [
+    {
+      "token": "transfer",
+      "weight": 7.2522
+    },
+    {
+      "token": "swift",
+      "weight": 6.9827
+    },
+    {
+      "token": "cost",
+      "weight": 4.0808
+    },
+    {
+      "token": "transfers",
+      "weight": 3.913
+    },
+    {
+      "token": "receiving",
+      "weight": 3.6735
+    },
+    {
+      "token": "swift transfers",
+      "weight": 3.1902
+    },
+    {
+      "token": "charge",
+      "weight": 3.1678
+    },
+    {
+      "token": "receiving money",
+      "weight": 3.0275
+    },
+    {
+      "token": "safer",
+      "weight": 3.0137
+    },
+    {
+      "token": "be charged",
+      "weight": 2.8642
+    }
+  ],
+  "seen_a_sign_recently": [
+    {
+      "token": "us",
+      "weight": 4.7483
+    },
+    {
+      "token": "fees",
+      "weight": 4.2522
+    },
+    {
+      "token": "international card",
+      "weight": 4.0108
+    },
+    {
+      "token": "european",
+      "weight": 3.7888
+    },
+    {
+      "token": "top",
+      "weight": 3.7657
+    },
+    {
+      "token": "charge",
+      "weight": 3.5585
+    },
+    {
+      "token": "international",
+      "weight": 3.5349
+    },
+    {
+      "token": "card",
+      "weight": 3.445
+    },
+    {
+      "token": "topping",
+      "weight": 3.4076
+    },
+    {
+      "token": "add money",
+      "weight": 3.2468
+    }
+  ],
+  "send_invoice": [
+    {
+      "token": "check",
+      "weight": 9.6155
+    },
+    {
+      "token": "cash",
+      "weight": 6.16
+    },
+    {
+      "token": "to top",
+      "weight": 4.0554
+    },
+    {
+      "token": "top",
+      "weight": 3.879
+    },
+    {
+      "token": "top up",
+      "weight": 3.523
+    },
+    {
+      "token": "deposit",
+      "weight": 3.2711
+    },
+    {
+      "token": "with cash",
+      "weight": 3.185
+    },
+    {
+      "token": "with check",
+      "weight": 3.1556
+    },
+    {
+      "token": "up",
+      "weight": 3.0705
+    },
+    {
+      "token": "check to",
+      "weight": 2.8715
+    }
+  ],
+  "share_balance": [
+    {
+      "token": "up",
+      "weight": 5.4282
+    },
+    {
+      "token": "top",
+      "weight": 5.1547
+    },
+    {
+      "token": "topup",
+      "weight": 5.0748
+    },
+    {
+      "token": "top up",
+      "weight": 4.8402
+    },
+    {
+      "token": "worked",
+      "weight": 4.3951
+    },
+    {
+      "token": "my top",
+      "weight": 4.0756
+    },
+    {
+      "token": "my topup",
+      "weight": 3.4995
+    },
+    {
+      "token": "work",
+      "weight": 3.3095
+    },
+    {
+      "token": "money added",
+      "weight": 2.982
+    },
+    {
+      "token": "failed",
+      "weight": 2.936
+    }
+  ],
+  "sharing_personal_information": [
+    {
+      "token": "limit",
+      "weight": 7.3222
+    },
+    {
+      "token": "limits",
+      "weight": 5.7011
+    },
+    {
+      "token": "top",
+      "weight": 5.3595
+    },
+    {
+      "token": "can top",
+      "weight": 4.5706
+    },
+    {
+      "token": "maximum",
+      "weight": 3.7402
+    },
+    {
+      "token": "up",
+      "weight": 3.4983
+    },
+    {
+      "token": "top up",
+      "weight": 3.4829
+    },
+    {
+      "token": "topup",
+      "weight": 3.3432
+    },
+    {
+      "token": "ups",
+      "weight": 3.3318
+    },
+    {
+      "token": "top ups",
+      "weight": 3.3318
+    }
+  ],
+  "show_purchases": [
+    {
+      "token": "topup",
+      "weight": 5.8639
+    },
+    {
+      "token": "my top",
+      "weight": 5.8239
+    },
+    {
+      "token": "reverted",
+      "weight": 5.6514
+    },
+    {
+      "token": "cancelled",
+      "weight": 4.9966
+    },
+    {
+      "token": "up",
+      "weight": 4.3596
+    },
+    {
+      "token": "top",
+      "weight": 3.9596
+    },
+    {
+      "token": "my topup",
+      "weight": 3.5116
+    },
+    {
+      "token": "top up",
+      "weight": 3.4774
+    },
+    {
+      "token": "topped",
+      "weight": 3.3061
+    },
+    {
+      "token": "topup was",
+      "weight": 3.1326
+    }
+  ],
+  "supported_cards_and_currencies": [
+    {
+      "token": "up",
+      "weight": 5.7093
+    },
+    {
+      "token": "top",
+      "weight": 4.5793
+    },
+    {
+      "token": "credit card",
+      "weight": 4.2944
+    },
+    {
+      "token": "top up",
+      "weight": 4.2709
+    },
+    {
+      "token": "credit",
+      "weight": 3.8163
+    },
+    {
+      "token": "money",
+      "weight": 3.7336
+    },
+    {
+      "token": "my wallet",
+      "weight": 3.6904
+    },
+    {
+      "token": "friends",
+      "weight": 3.6808
+    },
+    {
+      "token": "wallet",
+      "weight": 3.6719
+    },
+    {
+      "token": "my credit",
+      "weight": 3.3794
+    }
+  ],
+  "terminate_account": [
+    {
+      "token": "twice",
+      "weight": 8.3447
+    },
+    {
+      "token": "duplicate",
+      "weight": 6.2089
+    },
+    {
+      "token": "double",
+      "weight": 5.2577
+    },
+    {
+      "token": "charged",
+      "weight": 4.2495
+    },
+    {
+      "token": "times",
+      "weight": 4.1072
+    },
+    {
+      "token": "charge",
+      "weight": 3.9628
+    },
+    {
+      "token": "charged twice",
+      "weight": 3.941
+    },
+    {
+      "token": "duplicated",
+      "weight": 3.9257
+    },
+    {
+      "token": "same",
+      "weight": 3.9133
+    },
+    {
+      "token": "the same",
+      "weight": 3.7484
+    }
+  ],
+  "top_up_by_bank_transfer_charge": [
+    {
+      "token": "fee",
+      "weight": 7.7581
+    },
+    {
+      "token": "transfer",
+      "weight": 7.6436
+    },
+    {
+      "token": "transferring",
+      "weight": 4.3257
+    },
+    {
+      "token": "charged",
+      "weight": 4.2643
+    },
+    {
+      "token": "free",
+      "weight": 3.7909
+    },
+    {
+      "token": "extra",
+      "weight": 3.5286
+    },
+    {
+      "token": "why",
+      "weight": 3.3496
+    },
+    {
+      "token": "for transferring",
+      "weight": 3.287
+    },
+    {
+      "token": "fees",
+      "weight": 3.264
+    },
+    {
+      "token": "transfers",
+      "weight": 3.1823
+    }
+  ],
+  "top_up_by_card_charge": [
+    {
+      "token": "bank",
+      "weight": 6.5987
+    },
+    {
+      "token": "transfer",
+      "weight": 5.7121
+    },
+    {
+      "token": "account",
+      "weight": 5.0258
+    },
+    {
+      "token": "transferring",
+      "weight": 4.2424
+    },
+    {
+      "token": "money",
+      "weight": 4.0525
+    },
+    {
+      "token": "bank transfer",
+      "weight": 3.8372
+    },
+    {
+      "token": "transfer money",
+      "weight": 3.4465
+    },
+    {
+      "token": "into",
+      "weight": 3.1341
+    },
+    {
+      "token": "how",
+      "weight": 2.9778
+    },
+    {
+      "token": "my account",
+      "weight": 2.8101
+    }
+  ],
+  "top_up_by_cash_or_cheque": [
+    {
+      "token": "transaction",
+      "weight": 6.3653
+    },
+    {
+      "token": "friend",
+      "weight": 4.8822
+    },
+    {
+      "token": "transfer",
+      "weight": 4.3496
+    },
+    {
+      "token": "money",
+      "weight": 4.1399
+    },
+    {
+      "token": "sent",
+      "weight": 3.9014
+    },
+    {
+      "token": "recipient",
+      "weight": 3.6903
+    },
+    {
+      "token": "arrive",
+      "weight": 3.2834
+    },
+    {
+      "token": "hasn",
+      "weight": 3.2608
+    },
+    {
+      "token": "money transaction",
+      "weight": 3.1648
+    },
+    {
+      "token": "arrived",
+      "weight": 3.1428
+    }
+  ],
+  "top_up_failed": [
+    {
+      "token": "transfer",
+      "weight": 6.7583
+    },
+    {
+      "token": "europe",
+      "weight": 4.3851
+    },
+    {
+      "token": "china",
+      "weight": 3.6639
+    },
+    {
+      "token": "transfer from",
+      "weight": 3.4223
+    },
+    {
+      "token": "transfer something",
+      "weight": 3.4215
+    },
+    {
+      "token": "from europe",
+      "weight": 3.3681
+    },
+    {
+      "token": "how long",
+      "weight": 3.317
+    },
+    {
+      "token": "long",
+      "weight": 3.2887
+    },
+    {
+      "token": "my account",
+      "weight": 3.2331
+    },
+    {
+      "token": "in my",
+      "weight": 3.1638
+    }
+  ],
+  "top_up_limits": [
+    {
+      "token": "identity",
+      "weight": 5.5278
+    },
+    {
+      "token": "my identity",
+      "weight": 5.3875
+    },
+    {
+      "token": "identification",
+      "weight": 4.9872
+    },
+    {
+      "token": "my id",
+      "weight": 4.1358
+    },
+    {
+      "token": "verified",
+      "weight": 3.9512
+    },
+    {
+      "token": "id",
+      "weight": 3.9315
+    },
+    {
+      "token": "app",
+      "weight": 3.5691
+    },
+    {
+      "token": "the app",
+      "weight": 3.2987
+    },
+    {
+      "token": "verify",
+      "weight": 3.1674
+    },
+    {
+      "token": "verification",
+      "weight": 2.8352
+    }
+  ],
+  "top_up_reverted": [
+    {
+      "token": "identity",
+      "weight": 9.0832
+    },
+    {
+      "token": "id",
+      "weight": 5.2329
+    },
+    {
+      "token": "my identity",
+      "weight": 4.1693
+    },
+    {
+      "token": "the identity",
+      "weight": 3.992
+    },
+    {
+      "token": "what",
+      "weight": 3.6031
+    },
+    {
+      "token": "verify my",
+      "weight": 3.4153
+    },
+    {
+      "token": "verify",
+      "weight": 3.2249
+    },
+    {
+      "token": "prove",
+      "weight": 3.0393
+    },
+    {
+      "token": "documents",
+      "weight": 2.6999
+    },
+    {
+      "token": "verification",
+      "weight": 2.5509
+    }
+  ],
+  "topping_up_by_card": [
+    {
+      "token": "funds",
+      "weight": 6.6236
+    },
+    {
+      "token": "where",
+      "weight": 6.1555
+    },
+    {
+      "token": "source",
+      "weight": 5.5312
+    },
+    {
+      "token": "from",
+      "weight": 4.4291
+    },
+    {
+      "token": "my funds",
+      "weight": 4.1701
+    },
+    {
+      "token": "source of",
+      "weight": 3.8068
+    },
+    {
+      "token": "money",
+      "weight": 3.2709
+    },
+    {
+      "token": "come from",
+      "weight": 2.7772
+    },
+    {
+      "token": "track",
+      "weight": 2.415
+    },
+    {
+      "token": "my money",
+      "weight": 2.3689
+    }
+  ],
+  "transaction_charged_twice": [
+    {
+      "token": "verify",
+      "weight": 6.8315
+    },
+    {
+      "token": "topup",
+      "weight": 6.2386
+    },
+    {
+      "token": "verification",
+      "weight": 6.2109
+    },
+    {
+      "token": "verified",
+      "weight": 5.0013
+    },
+    {
+      "token": "code",
+      "weight": 4.9266
+    },
+    {
+      "token": "top",
+      "weight": 4.2199
+    },
+    {
+      "token": "topup card",
+      "weight": 4.0824
+    },
+    {
+      "token": "top up",
+      "weight": 4.0187
+    },
+    {
+      "token": "the top",
+      "weight": 3.8238
+    },
+    {
+      "token": "verification code",
+      "weight": 3.8124
+    }
+  ],
+  "transfer_fee_charged": [
+    {
+      "token": "virtual",
+      "weight": 6.6717
+    },
+    {
+      "token": "virtual card",
+      "weight": 6.0114
+    },
+    {
+      "token": "my virtual",
+      "weight": 4.7114
+    },
+    {
+      "token": "my disposable",
+      "weight": 4.4462
+    },
+    {
+      "token": "work",
+      "weight": 3.5183
+    },
+    {
+      "token": "disposable",
+      "weight": 3.2573
+    },
+    {
+      "token": "working",
+      "weight": 2.6929
+    },
+    {
+      "token": "card to",
+      "weight": 2.6829
+    },
+    {
+      "token": "card",
+      "weight": 2.3835
+    },
+    {
+      "token": "disposable card",
+      "weight": 2.3616
+    }
+  ],
+  "transfer_into_account": [
+    {
+      "token": "mastercard",
+      "weight": 9.4583
+    },
+    {
+      "token": "visa",
+      "weight": 8.6704
+    },
+    {
+      "token": "visa card",
+      "weight": 3.8374
+    },
+    {
+      "token": "choose",
+      "weight": 3.4851
+    },
+    {
+      "token": "master",
+      "weight": 3.2623
+    },
+    {
+      "token": "master card",
+      "weight": 2.9863
+    },
+    {
+      "token": "can choose",
+      "weight": 2.8881
+    },
+    {
+      "token": "get visa",
+      "weight": 2.6532
+    },
+    {
+      "token": "cards do",
+      "weight": 2.6511
+    },
+    {
+      "token": "get",
+      "weight": 2.5756
+    }
+  ],
+  "transfer_not_received_by_recipient": [
+    {
+      "token": "identity",
+      "weight": 8.0849
+    },
+    {
+      "token": "verification",
+      "weight": 4.3226
+    },
+    {
+      "token": "use my",
+      "weight": 3.748
+    },
+    {
+      "token": "my identity",
+      "weight": 3.703
+    },
+    {
+      "token": "why",
+      "weight": 3.3999
+    },
+    {
+      "token": "identity check",
+      "weight": 3.3708
+    },
+    {
+      "token": "why do",
+      "weight": 3.2858
+    },
+    {
+      "token": "verifying",
+      "weight": 3.1886
+    },
+    {
+      "token": "you need",
+      "weight": 3.0764
+    },
+    {
+      "token": "identification",
+      "weight": 2.9732
+    }
+  ],
+  "transfer_timing": [
+    {
+      "token": "amount",
+      "weight": 6.408
+    },
+    {
+      "token": "cash",
+      "weight": 5.2813
+    },
+    {
+      "token": "100",
+      "weight": 4.8375
+    },
+    {
+      "token": "atm",
+      "weight": 4.6566
+    },
+    {
+      "token": "only",
+      "weight": 4.5873
+    },
+    {
+      "token": "my cash",
+      "weight": 4.4706
+    },
+    {
+      "token": "20",
+      "weight": 4.0471
+    },
+    {
+      "token": "the atm",
+      "weight": 3.8797
+    },
+    {
+      "token": "asked for",
+      "weight": 3.482
+    },
+    {
+      "token": "asked",
+      "weight": 3.4693
+    }
+  ],
+  "unable_to_verify_identity": [
+    {
+      "token": "cash",
+      "weight": 5.9674
+    },
+    {
+      "token": "rate",
+      "weight": 5.8275
+    },
+    {
+      "token": "exchange",
+      "weight": 5.2695
+    },
+    {
+      "token": "exchange rate",
+      "weight": 5.2171
+    },
+    {
+      "token": "the exchange",
+      "weight": 4.0941
+    },
+    {
+      "token": "currency",
+      "weight": 3.9416
+    },
+    {
+      "token": "wrong",
+      "weight": 3.5456
+    },
+    {
+      "token": "withdrawal",
+      "weight": 3.3618
+    },
+    {
+      "token": "atm",
+      "weight": 3.2822
+    },
+    {
+      "token": "holiday",
+      "weight": 3.2076
+    }
+  ]
+}

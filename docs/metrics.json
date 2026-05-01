@@ -1,0 +1,10 @@
+{
+  "model_version": "model_v20260501_191559",
+  "data_hash": "c12f48c833afe00afa6266d2e7045049a5279fd4d8ec6d12d478fd287c61a947",
+  "training_samples": 8493,
+  "accuracy": 0.8791,
+  "macro_f1": 0.8792,
+  "weighted_f1": 0.8792,
+  "drift_score": 0.0907,
+  "drift_alert": false
+}
