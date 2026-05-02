@@ -41,14 +41,8 @@ def evaluate_model():
     data = train_result["data"]
 
     if data.get("skip"):
-        hash_path = SAVED_MODELS_DIR / "last_data_hash.txt"
-        cached = hash_path.read_text().strip() if hash_path.exists() else None
-        if hash_path.exists():
-            hash_path.unlink()
         from ml.prepare_data import prepare_features
-        data = prepare_features()
-        if cached:
-            hash_path.write_text(cached)
+        data = prepare_features(force_compute=True, save_artifacts=False)
 
     X_test = data["X_test"]
     y_test = data["y_test"]

@@ -23,8 +23,19 @@ SAVED_MODELS_DIR = Path(__file__).parent / "saved_models"
 SAVED_MODELS_DIR.mkdir(exist_ok=True)
 
 
-def prepare_features():
-    """Load cleaned transcripts, fit a TF-IDF vectorizer, and return train/val/test splits."""
+def prepare_features(force_compute=False, save_artifacts=True):
+    """Load cleaned transcripts, fit a TF-IDF vectorizer, and return train/val/test splits.
+
+    Parameters
+    ----------
+    force_compute : bool
+        Skip the data-hash short-circuit and always compute the full feature matrix.
+        Used by `evaluate.py` when it needs the test split even though training was skipped.
+    save_artifacts : bool
+        Whether to write `tfidf_vectorizer.pkl` and `label_encoder.pkl` to disk.
+        `evaluate.py` sets this to False when it forces a re-compute, so the existing
+        on-disk vectorizer (which the pretrained classifier was fit against) is preserved.
+    """
     logger.info("Loading cleaned transcripts from database...")
     with get_session() as session:
         result = session.execute(text("""
@@ -42,11 +53,12 @@ def prepare_features():
     train_df = df[df["split"] == "train"].reset_index(drop=True)
     test_df = df[df["split"] == "test"].reset_index(drop=True)
 
-    data_hash = hashlib.sha256(train_df["cleaned_transcript"].to_csv().encode()).hexdigest()
+    sorted_transcripts = train_df["cleaned_transcript"].sort_values().reset_index(drop=True)
+    data_hash = hashlib.sha256(sorted_transcripts.to_csv().encode()).hexdigest()
     logger.info(f"Data hash: {data_hash}")
 
     hash_path = SAVED_MODELS_DIR / "last_data_hash.txt"
-    if hash_path.exists() and hash_path.read_text().strip() == data_hash:
+    if not force_compute and hash_path.exists() and hash_path.read_text().strip() == data_hash:
         logger.info("Data unchanged since last run -- skipping retraining")
         return {"skip": True, "data_hash": data_hash}
 
@@ -77,9 +89,13 @@ def prepare_features():
 
     logger.info(f"Split -- Train: {X_train.shape[0]:,} | Val: {X_val.shape[0]:,} | Test: {X_test_raw.shape[0]:,}")
 
-    joblib.dump(vectorizer, SAVED_MODELS_DIR / "tfidf_vectorizer.pkl")
-    joblib.dump(le, SAVED_MODELS_DIR / "label_encoder.pkl")
-    logger.info("Saved tfidf_vectorizer.pkl and label_encoder.pkl")
+    if save_artifacts:
+        joblib.dump(vectorizer, SAVED_MODELS_DIR / "tfidf_vectorizer.pkl")
+        joblib.dump(le, SAVED_MODELS_DIR / "label_encoder.pkl")
+        (SAVED_MODELS_DIR / "last_data_hash.txt").write_text(data_hash)
+        logger.info("Saved tfidf_vectorizer.pkl, label_encoder.pkl, and last_data_hash.txt")
+    else:
+        logger.info("save_artifacts=False -- existing tfidf_vectorizer.pkl / label_encoder.pkl / last_data_hash.txt left untouched")
 
     return {
         "skip": False,
