@@ -96,82 +96,305 @@ The Prefect flow runs every stage in dependency order; each task is idempotent s
 
 ---
 
-## Prerequisites
+## How to Run
 
-- Python 3.11+
-- PostgreSQL 16
-- ffmpeg (Whisper requires it for audio decoding)
-- Docker Desktop (only for the containerised path)
+There are **two ways** to run VoiceIntent. Pick the one that matches your environment:
+
+| Path | When to use | First-run cost |
+| ---- | ----------- | -------------- |
+| **A. Dockerised** | Cleanest, works identically on macOS / Linux / Windows. No need to install Python, Postgres, ffmpeg yourself. | ~9 min build, then `up -d` is seconds |
+| **B. Conventional** | Faster iteration during development, lower memory footprint. You install Python, Postgres, and ffmpeg yourself. | ~5 min if Python is already installed |
+
+Both paths land at the same place: API on `http://localhost:8000`, dashboard on `http://localhost:8501`.
+
+---
+
+## Path A — Dockerised Setup
+
+Works the same on macOS, Ubuntu, and Windows. Only prerequisite is **Docker Desktop** (https://www.docker.com/products/docker-desktop/).
 
 ```bash
-# macOS
-brew install ffmpeg postgresql@16
+git clone https://github.com/HasanAmjad/ai-voice-assistant.git
+cd ai-voice-assistant
+cp .env.example .env       # fill in HF_TOKEN if you want to re-run ingestion
+docker-compose up --build
+```
+
+That's it. On the first run the build takes ~9 min (pulls the CPU-only torch wheel, Whisper, etc.). Subsequent `docker-compose up -d` starts in seconds. The postgres container auto-loads `voiceintent_dump.sql` on first start so you don't need to restore the database manually.
+
+When the API logs `Application startup complete`, open:
+- API Swagger: http://localhost:8000/docs
+- Dashboard: http://localhost:8501
+
+To stop everything: `docker-compose down`.
+
+---
+
+## Path B — Conventional Setup
+
+Three ordered steps. The **first step (B.1 / B.2 / B.3) is OS-specific** — pick the one that matches your machine. Everything after that (B.4 and B.5) is the same regardless of OS.
+
+```
+B.1 / B.2 / B.3   →   B.4: seed the database   →   B.5: start the project
+   (your OS)            (fast OR slow)               (same for everyone)
 ```
 
 ---
 
-## Quick start (local)
+### B.1 — macOS prerequisites
 
 ```bash
-# 1. Clone, enter, create venv
-git clone https://github.com/HasanAmjad/ai-voice-assistant.git && cd ai-voice-assistant
+# Install system tools
+brew install python@3.11 ffmpeg postgresql@14
+brew services start postgresql@14
+
+# Clone the repo
+git clone https://github.com/HasanAmjad/ai-voice-assistant.git
+cd ai-voice-assistant
+
+# Python venv + dependencies
 python3.11 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-export PYTHONPATH="$PWD"
 
-# 2. Copy env template and fill in DB password + HF token
+# Configure environment
 cp .env.example .env
-# DATABASE_URL=postgresql://postgres:PASSWORD@localhost:5432/voiceintent
-# HF_TOKEN=...
+# Open .env and set POSTGRES_PASSWORD to whatever your local postgres uses
+# (Brew installs often have no password — leave it blank in that case)
+```
 
-# 3. Restore the database from the shared dump (fastest path)
+Now go to **B.4** below.
+
+---
+
+### B.2 — Ubuntu / Debian prerequisites
+
+```bash
+# Install system tools
+sudo apt update
+sudo apt install -y python3.11 python3.11-venv python3-pip ffmpeg postgresql postgresql-contrib
+sudo systemctl start postgresql
+
+# Set the postgres user's password (skip if you already configured one)
+sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'YOUR_PASSWORD';"
+
+# Clone the repo
+git clone https://github.com/HasanAmjad/ai-voice-assistant.git
+cd ai-voice-assistant
+
+# Python venv + dependencies
+python3.11 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# Configure environment
+cp .env.example .env
+# Open .env and set POSTGRES_PASSWORD and DATABASE_URL to use YOUR_PASSWORD
+```
+
+Now go to **B.4** below.
+
+---
+
+### B.3 — Windows (native PowerShell) prerequisites
+
+> If you're comfortable with WSL2, install Ubuntu via WSL and follow the **B.2 Ubuntu** instructions instead — it's smoother. The native PowerShell instructions below work too.
+
+**Install system tools** (pick one method per row):
+
+| Tool | Installer (manual) | Package manager |
+| ---- | ----------------- | --------------- |
+| Python 3.11 | https://www.python.org/downloads/ | `winget install Python.Python.3.11` |
+| PostgreSQL | https://www.postgresql.org/download/windows/ | `winget install PostgreSQL.PostgreSQL` |
+| ffmpeg | https://www.gyan.dev/ffmpeg/builds/ → unzip to `C:\ffmpeg`, add `C:\ffmpeg\bin` to PATH | `winget install Gyan.FFmpeg` or `choco install ffmpeg` |
+| Git | https://git-scm.com/download/win | `winget install Git.Git` |
+
+Open a **fresh PowerShell window** (so the new PATH takes effect) and verify each tool:
+
+```powershell
+python --version          # should show 3.11.x
+ffmpeg -version           # should show ffmpeg 6+
+psql --version            # should show 16.x
+```
+
+Then:
+
+```powershell
+# Clone the repo
+git clone https://github.com/HasanAmjad/ai-voice-assistant.git
+cd ai-voice-assistant
+
+# Python venv + dependencies
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+
+# Make sure PostgreSQL service is running
+Start-Service postgresql-x64-16   # service name may differ; check with: Get-Service postgresql*
+
+# Configure environment
+copy .env.example .env
+# Open .env and set POSTGRES_PASSWORD and DATABASE_URL to use the password you set during PostgreSQL install
+$env:PYTHONPATH = $PWD
+```
+
+Now go to **B.4** below.
+
+---
+
+### B.4 — Seed the database (pick ONE of two options)
+
+> | | **🚀 Option 1 — Fast path (recommended)** | **🐢 Option 2 — Slow path** |
+> | --- | --- | --- |
+> | What it does | Restores `voiceintent_dump.sql` — a snapshot of the fully-trained DB | Re-runs the full pipeline (audio synthesis → Whisper transcription → training) |
+> | Time | ~30 seconds | ~6–10 hours |
+> | Needs `HF_TOKEN`? | No | Yes |
+
+**Pick one option below — do not run both.** Then continue to B.5.
+
+---
+
+#### B.4 — Option 1 — 🚀 Fast path (restore the dump)
+
+Pick the variant for your OS:
+
+**macOS / Ubuntu:**
+
+```bash
 psql -U postgres -h localhost -p 5432 -d postgres -c "DROP DATABASE IF EXISTS voiceintent;"
 psql -U postgres -h localhost -p 5432 -d postgres -c "CREATE DATABASE voiceintent;"
 psql -U postgres -h localhost -p 5432 -d voiceintent < voiceintent_dump.sql
-
-# 4. Run the orchestrated pipeline (skips training if a model is already present)
-python orchestration/pipeline.py
-
-# 5. Start API + dashboard in two terminals
-python serving/api.py                          # http://localhost:8000
-streamlit run serving/dashboard.py             # http://localhost:8501
 ```
 
-> The dump's `audio_file_path` values are absolute paths from the original machine. If the pipeline complains about pending transcriptions after restore, run:
+(On Ubuntu, prefix each command with `PGPASSWORD=YOUR_PASSWORD ` if you set a password.)
+
+**Windows (PowerShell):**
+
+```powershell
+psql -U postgres -h localhost -p 5432 -d postgres -c "DROP DATABASE IF EXISTS voiceintent;"
+psql -U postgres -h localhost -p 5432 -d postgres -c "CREATE DATABASE voiceintent;"
+psql -U postgres -h localhost -p 5432 -d voiceintent -f voiceintent_dump.sql
+```
+
+Verify it worked — should print `13068`:
+
+```bash
+psql -U postgres -h localhost -p 5432 -d voiceintent -c "SELECT COUNT(*) FROM calls;"
+```
+
+Now skip to **B.5**.
+
+---
+
+#### B.4 — Option 2 — 🐢 Slow path (regenerate from scratch)
+
+Use this only if you don't have the dump file, or you want to verify the full pipeline end-to-end. Total runtime is ~6–10 hours, most of it Whisper transcribing 13,069 audio clips on CPU.
+
+**Step 2.1 — Get a HuggingFace token** (the pipeline downloads BANKING77 from HuggingFace and needs a free token):
+
+1. Sign up / log in at https://huggingface.co
+2. Go to https://huggingface.co/settings/tokens → **New token** → name it anything → role **Read** → **Generate**.
+3. Copy the token string (starts with `hf_…`).
+4. Open `.env` in any editor and set:
+   ```env
+   HF_TOKEN=hf_your_token_here
+   ```
+
+**Step 2.2 — Create an empty database** (same DROP/CREATE as Option 1, but do **not** load the dump file):
+
+macOS / Ubuntu:
+```bash
+psql -U postgres -h localhost -p 5432 -d postgres -c "DROP DATABASE IF EXISTS voiceintent;"
+psql -U postgres -h localhost -p 5432 -d postgres -c "CREATE DATABASE voiceintent;"
+```
+
+Windows (PowerShell): exactly the same two commands as above.
+
+**Step 2.3 — Create the four tables inside the empty database:**
+
+```bash
+python -c "from storage.db import init_db; init_db()"
+```
+
+(No output means success. If you see an error, `DATABASE_URL` in `.env` is the usual culprit.)
+
+**Step 2.4 — Run the pipeline stages.** Two ways to do this:
+
+*Way A — Stage by stage* (more visibility; recommended for the first run):
+
+```bash
+python ingestion/download_dataset.py    # ~30 sec — pulls BANKING77 CSVs from HuggingFace
+python ingestion/synthesize_audio.py    # ~2 hr — gTTS makes 13k .mp3 files (rate-limited)
+python ingestion/store_metadata.py      # ~1 min — registers each .mp3 in the calls table
+python processing/transcribe.py         # 4-8 hr on CPU, ~30 min on GPU — Whisper transcribes everything
+python processing/clean.py              # ~1 min — normalises transcripts
+python processing/validate.py           # ~30 sec — Great Expectations data-quality checks
+python ml/prepare_data.py               # ~10 sec — fits TF-IDF vectorizer
+python ml/train.py                      # ~30 sec — trains the classifier
+python ml/evaluate.py                   # ~20 sec — writes metrics + confusion matrix
+python ml/threshold_sweep.py            # ~10 sec — writes threshold-sweep artifacts
+```
+
+*Way B — All at once via Prefect* (less verbose; retries on failure; logs to `logs/pipeline.log`):
+
+```bash
+python orchestration/pipeline.py
+```
+
+**Step 2.5 — Verify the database is populated:**
+
+```bash
+psql -U postgres -h localhost -p 5432 -d voiceintent -c "
+  SELECT 'calls' AS t, COUNT(*) FROM calls
+  UNION ALL SELECT 'transcripts', COUNT(*) FROM transcripts
+  UNION ALL SELECT 'model_runs',  COUNT(*) FROM model_runs;"
+```
+
+Expected: `calls` ≈ **13,068**, `transcripts` ≈ **13,068**, `model_runs` ≥ **1**. If `transcripts` is much lower, `transcribe.py` was interrupted — re-run it (it's idempotent and picks up where it left off).
+
+Now continue to **B.5**.
+
+---
+
+### B.5 — Start the API and dashboard (all OSes)
+
+You're here whether you took the fast or the slow path — your database is now populated either way.
+
+#### Option 1 — One-shot helper script (macOS / Linux only)
+
+```bash
+./run.sh
+```
+
+This stops any leftover api/dashboard, starts postgres if needed, boots FastAPI on `:8000` and Streamlit on `:8501`, waits for both to be ready, prints the URLs, and tails logs. Press `Ctrl+C` to stop both cleanly.
+
+#### Option 2 — Manual (works on all OSes including Windows)
+
+You'll need three terminals (or background each command).
+
+```bash
+# Terminal 1 — Prefect pipeline (skips training if a model already exists)
+python orchestration/pipeline.py
+```
+
+```bash
+# Terminal 2 — FastAPI
+python serving/api.py
+# → http://localhost:8000/docs
+```
+
+```bash
+# Terminal 3 — Streamlit dashboard
+streamlit run serving/dashboard.py
+# → http://localhost:8501
+```
+
+> **Fast-path users only:** if `pipeline.py` reports thousands of "pending" transcriptions, the dump's `audio_file_path` values are absolute paths from the original machine. Translate them to your local layout:
 > ```sql
 > UPDATE calls SET audio_file_path =
 >   '<your-project-root>/data/audio/' ||
 >   REPLACE(SUBSTRING(audio_file_path FROM POSITION('data\audio\' IN audio_file_path) + 11), '\', '/');
 > ```
-
----
-
-## Running from scratch (without the dump)
-
-If you want to regenerate everything yourself instead of using the shared dump:
-
-```bash
-psql -U postgres -h localhost -p 5432 -c "CREATE DATABASE voiceintent;"
-python -c "from storage.db import init_db; init_db()"
-
-python ingestion/download_dataset.py
-python ingestion/synthesize_audio.py    # ~2 hr (rate-limited by gTTS)
-python ingestion/store_metadata.py
-python processing/transcribe.py         # 4-8 hr CPU, ~30 min GPU
-python processing/clean.py
-python processing/validate.py
-python ml/prepare_data.py
-python ml/train.py
-python ml/evaluate.py
-python ml/threshold_sweep.py
-```
-
-Or run all of them through the Prefect flow:
-
-```bash
-python orchestration/pipeline.py
-```
 
 ---
 
@@ -283,24 +506,15 @@ voiceintent/
 ├── orchestration/             # Prefect flow
 ├── serving/                   # FastAPI + Streamlit
 ├── logging_monitoring/        # JSON-structured logger
-├── data/                      # audio + raw CSVs (not committed)
+├── data/                      # audio + raw CSVs (samples committed under data/audio/samples/)
 ├── gx/                        # Great Expectations project root
-├── docs/                      # generated metrics, plots, sweep results
+├── docs/                      # architecture/schema diagrams, metrics, sweep results, report
 ├── voiceintent_dump.sql       # shared full-DB snapshot
+├── run.sh                     # one-shot dev launcher (macOS / Linux)
 ├── docker-compose.yml         # multi-container deployment
 ├── Dockerfile
 └── requirements.txt
 ```
-
----
-
-## Docker
-
-```bash
-docker-compose up --build
-```
-
-Stands up four services: `postgres`, `pipeline`, `api` (port 8000), `dashboard` (port 8501). First build pulls torch + Whisper, takes ~50 min on a fresh machine; subsequent builds are cached.
 
 ---
 
