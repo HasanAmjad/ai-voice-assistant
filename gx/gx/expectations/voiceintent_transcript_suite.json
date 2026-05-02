@@ -1,7 +1,7 @@
 {
   "expectations": [
     {
-      "id": "29b12dd3-ecf7-40d2-a29c-1966bb08b377",
+      "id": "1edb46fe-9978-42a7-8ec1-535f7c2df2ef",
       "kwargs": {
         "column": "cleaned_transcript"
       },
@@ -10,7 +10,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "fb8493fc-eb92-4b1c-a319-1bc019ef19b6",
+      "id": "f43f84fd-3584-4cfa-8533-3c2523579282",
       "kwargs": {
         "column": "cleaned_transcript",
         "max_value": 500,
@@ -21,7 +21,7 @@
       "type": "expect_column_value_lengths_to_be_between"
     },
     {
-      "id": "4fb9a496-26d6-4867-86e6-b9fe493494d4",
+      "id": "12b90add-736e-435d-8441-0037729be8db",
       "kwargs": {
         "column": "intent_label",
         "value_set": [
@@ -101,15 +101,7 @@
           "transfer_into_account",
           "transfer_not_received_by_recipient",
           "transfer_timing",
-          "unable_to_verify_identity",
-          "verify_my_identity",
-          "verify_source_of_funds",
-          "verify_top_up",
-          "virtual_card_not_working",
-          "visa_or_mastercard",
-          "why_verify_identity",
-          "wrong_amount_of_cash_received",
-          "wrong_exchange_rate_for_cash_withdrawal"
+          "unable_to_verify_identity"
         ]
       },
       "meta": {},
@@ -117,7 +109,7 @@
       "type": "expect_column_values_to_be_in_set"
     },
     {
-      "id": "01553726-66ae-4b9a-ab05-d09ed69a49d5",
+      "id": "e5defd68-db79-4be8-b42f-28719aa12916",
       "kwargs": {
         "column": "call_id"
       },
@@ -126,7 +118,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "7f5b1c89-fdc7-4603-8af7-64c217581fdb",
+      "id": "f513c2d5-9b89-43ce-8dc4-39173faa64cc",
       "kwargs": {
         "min_value": 1
       },
@@ -135,7 +127,7 @@
       "type": "expect_table_row_count_to_be_between"
     }
   ],
-  "id": "bfcd3a19-aea3-4acd-8757-cdec10f68d62",
+  "id": "83286342-f34e-46d5-b4ef-520e8200ccf2",
   "meta": {
     "great_expectations_version": "1.17.0"
   },
