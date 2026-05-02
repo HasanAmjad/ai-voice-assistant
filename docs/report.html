@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VoiceIntent — AI 620 Project Report</title>
+<style>
+@page { size: A4; margin: 0.55in 0.6in; }
+* { box-sizing: border-box; }
+body {
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.35;
+    color: #222;
+    margin: 0;
+}
+h1 { font-size: 16pt; margin: 0 0 4px 0; color: #111; }
+h2 { font-size: 11pt; margin: 10px 0 4px 0; color: #1a3a6c; border-bottom: 1px solid #ccd; padding-bottom: 2px; break-after: avoid-page; }
+h3 { font-size: 10pt; margin: 8px 0 3px 0; color: #333; }
+.diagram, .keep { break-inside: avoid-page; }
+p { margin: 3px 0 6px 0; }
+ul, ol { margin: 3px 0 6px 16px; padding: 0; }
+li { margin: 1px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 8.8pt; margin: 4px 0; }
+th, td { border: 1px solid #bbb; padding: 3px 6px; text-align: left; vertical-align: top; }
+th { background: #f0f4fa; font-weight: 600; }
+code { background: #f3f3f3; padding: 0 3px; border-radius: 2px; font-size: 8.5pt; }
+.subtitle { color: #666; font-size: 9pt; margin-bottom: 6px; }
+.diagram { text-align: center; margin: 4px 0; }
+.mermaid { font-size: 8pt; }
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 4px 0 8px 0; }
+.metric { border: 1px solid #cdd; padding: 4px 6px; border-radius: 3px; background: #f7faff; }
+.metric .label { font-size: 7.5pt; color: #555; text-transform: uppercase; }
+.metric .value { font-size: 11pt; font-weight: 600; color: #1a3a6c; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.callout { background: #fff8e8; border-left: 3px solid #e0a82e; padding: 4px 8px; margin: 4px 0; font-size: 8.8pt; }
+hr { border: none; border-top: 1px solid #ddd; margin: 8px 0; }
+</style>
+
+<script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+mermaid.initialize({ startOnLoad: true, theme: "neutral", flowchart: { curve: "basis" } });
+</script>
+</head>
+<body>
+
+<h1>VoiceIntent — Voice-to-Intent Pipeline for Customer Support</h1>
+<div class="subtitle">AI 620: Fundamentals of Data Engineering · LUMS · Final Project Report</div>
+
+<h2>Team</h2>
+<table>
+<tr><th>Member</th><th>Roll No.</th><th>Contribution</th></tr>
+<tr><td>Hasan</td><td>{ROLL-1}</td><td>Data ingestion (HuggingFace + gTTS), PostgreSQL schema design, audio-metadata storage layer.</td></tr>
+<tr><td>Rohan</td><td>{ROLL-2}</td><td>Whisper transcription pipeline, transcript cleaning, Great Expectations data-quality suite.</td></tr>
+<tr><td>Lina</td><td>{ROLL-3}</td><td>ML pipeline: TF-IDF feature engineering, LogisticRegression intent classifier, evaluation + drift detection, threshold sweep.</td></tr>
+<tr><td>Ibrahim Noor</td><td>{ROLL-4}</td><td>Prefect orchestration, FastAPI + Streamlit serving layer, gTTS response synthesis, Docker deployment, structured logging.</td></tr>
+</table>
+
+<h2>Project Description</h2>
+<p><b>Goal.</b> Build a production-grade voice-to-intent pipeline that converts spoken banking customer queries into classified intents and synthesised voice replies. Domain: customer-support automation. Use case: an IVR-style agent that auto-handles confident calls and hands off uncertain ones to humans.</p>
+<p><b>Dataset.</b> BANKING77 from HuggingFace (<code>mteb/banking77</code>): 13,069 real customer queries across 77 fine-grained banking intents (e.g. <code>card_blocked</code>, <code>transfer_not_received_by_recipient</code>, <code>exchange_rate</code>). Text-only, so we synthesise corresponding audio with gTTS, then feed it back through Whisper to recover transcripts — exercising the full speech-to-text leg of a real call-centre stack.</p>
+
+<div class="metrics">
+<div class="metric"><div class="label">Test accuracy</div><div class="value">87.91%</div></div>
+<div class="metric"><div class="label">Macro F1</div><div class="value">0.8792</div></div>
+<div class="metric"><div class="label">Training-vs-test drift</div><div class="value">0.0907</div></div>
+<div class="metric"><div class="label">Auto-handled at θ=0.4</div><div class="value">73.5%</div></div>
+</div>
+
+<h2>Architecture</h2>
+<div class="diagram">
+<pre class="mermaid">
+flowchart LR
+    HF[(HuggingFace<br/>BANKING77)] --> ING[Ingestion]
+    ING -->|gTTS .mp3| AUDIO[(Audio files)]
+    AUDIO --> WHISP[Whisper transcribe]
+    WHISP --> CLEAN[clean.py]
+    CLEAN --> GX{Great<br/>Expectations}
+    GX --> ML[TF-IDF + LogReg]
+    ML --> EV[Evaluate + drift]
+    DB[(PostgreSQL<br/>4 tables)]
+    ING --- DB
+    WHISP --- DB
+    CLEAN --- DB
+    EV --- DB
+    SAVED[(saved_models/<br/>versioned)]
+    ML --> SAVED
+    EV --> SAVED
+    SAVED --> API[FastAPI /predict]
+    UPLOAD([Browser audio]) --> API
+    API --> WHISP2[Whisper] --> CLF[Classifier]
+    CLF -->|conf >= 0.4| TTS[gTTS reply<br/>cached]
+    CLF -->|conf < 0.4| ESC[Escalation<br/>handoff]
+    TTS --> DASH[Streamlit<br/>dashboard]
+    ESC --> DASH
+    API --- DB
+    PREFECT["Prefect<br/>(scheduled)"] -.-> ING
+    PREFECT -.-> WHISP
+    PREFECT -.-> CLEAN
+    PREFECT -.-> GX
+    PREFECT -.-> ML
+    PREFECT -.-> EV
+</pre>
+</div>
+
+<h2>Database Schema</h2>
+<div class="diagram">
+<pre class="mermaid">
+erDiagram
+    calls ||--|| transcripts : has
+    calls ||--o{ predictions : "live preds (nullable FK)"
+    model_runs ||--o{ predictions : "tagged by model_version"
+    calls {
+        int id PK
+        text audio_file_path UK
+        varchar intent_label
+        varchar split
+        timestamp created_at
+    }
+    transcripts {
+        int id PK
+        int call_id FK "unique"
+        text raw_transcript
+        text cleaned_transcript
+        timestamp transcribed_at
+    }
+    predictions {
+        int id PK
+        int call_id FK "nullable"
+        varchar predicted_intent
+        float confidence_score
+        text cleaned_transcript
+        varchar model_version
+        timestamp predicted_at
+    }
+    model_runs {
+        int id PK
+        varchar model_version
+        float accuracy
+        float macro_f1
+        int training_samples
+        text data_hash
+        float drift_score
+        timestamp trained_at
+    }
+</pre>
+</div>
+<p style="font-size:8.5pt; margin-top:2px;"><b>Why PostgreSQL.</b> Relational fit (clear FK relationships, joins for evaluation queries), GX integrates natively via dataframe extraction, SQLAlchemy ORM gives us migration safety, and Postgres handles 13k rows trivially while remaining production-realistic.</p>
+
+<h2>Pipeline Stages &amp; Tool Justification</h2>
+<table>
+<tr><th>Stage</th><th>Tool</th><th>Why</th></tr>
+<tr><td>Ingestion</td><td>HuggingFace <code>datasets</code> + gTTS</td><td>Real public dataset; gTTS is rate-limit aware and lets us synthesise reproducible audio.</td></tr>
+<tr><td>Storage</td><td>PostgreSQL 16 + SQLAlchemy</td><td>Strong typing, FK-enforced relationships, idempotent inserts via <code>ON CONFLICT DO NOTHING</code>.</td></tr>
+<tr><td>Transcription</td><td>OpenAI Whisper (tiny/base)</td><td>Open-source, runs on CPU, good accuracy/latency trade-off; ffmpeg-backed audio decoding.</td></tr>
+<tr><td>Cleaning</td><td>Custom <code>clean_text</code></td><td>Lower-case, strip punctuation, mark <code>[INAUDIBLE]</code>; idempotent (filters by <code>cleaned_transcript IS NULL</code>).</td></tr>
+<tr><td>Quality</td><td>Great Expectations 1.x</td><td>5 expectations: not-null, length 5–500, intent in canonical 77-set, FK present, row count &gt; 0. Run before training.</td></tr>
+<tr><td>ML</td><td>scikit-learn TF-IDF + LogisticRegression</td><td>Strong baseline for 77-class text classification (88% accuracy), fast inference, calibrated probabilities for confidence-gated routing.</td></tr>
+<tr><td>Orchestration</td><td>Prefect 3</td><td>Tasks have retries + delays; cron / interval scheduling via <code>flow.serve(cron=…)</code>; UI &amp; logs for run history.</td></tr>
+<tr><td>Serving</td><td>FastAPI + Streamlit</td><td>Swagger-documented endpoints, in-browser mic recorder, live drift card, recent-calls panel.</td></tr>
+<tr><td>Deployment</td><td>Docker Compose (CPU torch wheel)</td><td>One-command run; postgres + pipeline + api + dashboard each containerised; auto-loads dump on first start.</td></tr>
+<tr><td>Logging</td><td>python-json-logger</td><td>Structured JSON to stdout + <code>logs/pipeline.log</code>; HTTP middleware records latency per request.</td></tr>
+</table>
+
+<h2>Production-grade Extension: Model Deployment with Drift &amp; Threshold Policy</h2>
+<p>Of the five advanced extensions, we implemented <b>#4 Production-grade Model Deployment</b>. Concretely:</p>
+<ul>
+<li><b>Versioning:</b> models saved as <code>model_v{YYYYMMDD_HHMMSS}.pkl</code>; <code>model_runs</code> table tracks accuracy, F1, drift, and SHA-256 data hash per run; <code>latest_model.pkl</code> + <code>latest_model.txt</code> form a stable serving alias.</li>
+<li><b>Drift detection (two layers):</b> training-vs-test JS divergence at evaluate time, <em>and</em> live rolling-window divergence over the most recent 100 vs prior 100 predictions via <code>GET /drift</code>, with top-mover intents surfaced.</li>
+<li><b>Confidence-gated routing:</b> <code>CONFIDENCE_THRESHOLD=0.4</code>, justified by a sweep over [0.10–0.90] on the test set (<code>docs/threshold_sweep.png</code>): at 0.4 we escalate 23.3% of calls, the auto-handled subset is 95.9% precise, and only 3.2% of all calls receive a confidently-wrong canned reply. Below-threshold predictions get a synthesised "redirecting to an agent" voice handoff.</li>
+<li><b>Operational hygiene:</b> idempotent schema migrations on API startup, disk-cached gTTS audio (95 entries, hot reload across restarts), pre-warmer thread fills the cache in the background, dashboard surfaces recent calls + drift + model version.</li>
+</ul>
+
+<h2>Repository, Deployment &amp; AI Usage</h2>
+<p><b>Repository:</b> <a href="https://github.com/HasanAmjad/ai-voice-assistant">https://github.com/HasanAmjad/ai-voice-assistant</a><br>
+<b>Deployment:</b> Local one-command via <code>docker-compose up --build</code> (postgres autoloads <code>voiceintent_dump.sql</code>, api+dashboard expose ports 8000 / 8501). No public deployment URL; full instructions in <code>README.md</code>.</p>
+<p><b>AI Usage Disclosure.</b></p>
+<ul style="margin-top:0;">
+<li><b>Tool:</b> Claude (Anthropic).</li>
+<li><b>Used for:</b> Debugging environment issues.</li>
+<li><b>Extent:</b> Potential buggy code was given to Claude to debug and find issues.</li>
+</ul>
+
+</body>
+</html>

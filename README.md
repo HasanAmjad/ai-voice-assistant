@@ -114,7 +114,7 @@ brew install ffmpeg postgresql@16
 
 ```bash
 # 1. Clone, enter, create venv
-git clone <repo-url> && cd voiceintent
+git clone https://github.com/HasanAmjad/ai-voice-assistant.git && cd ai-voice-assistant
 python3.11 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
